@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thai Study - Consonants & Vowels</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&display=swap');
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .thai-font {
+            font-family: 'Noto Sans Thai', sans-serif;
+        }
+        /* Chat Widget Styles */
+        #chat-window {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .chat-hidden {
+            transform: translateY(20px);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .markdown-content { white-space: pre-wrap; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900 pb-20">
+    <div id="app" class="max-w-6xl mx-auto px-4 py-8">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-slate-800 mb-4">Thai Language Learning</h1>
+            <p class="text-lg text-slate-600">Consonants and Vowels Reference for Beginners</p>
+        </header>
+
+        <nav class="flex justify-center space-x-4 mb-8">
+            <button onclick="showSection('consonants')" class="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">Consonants</button>
+            <button onclick="showSection('vowels')" class="px-6 py-2 bg-emerald-600 text-white rounded-full hover:bg-emerald-700 transition">Vowels</button>
+        </nav>
+
+        <!-- Quick Tools Section -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border mb-12 max-w-2xl mx-auto">
+            <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
+                <span class="mr-2">🔍</span> Quick Pronunciation & Translate
+            </h3>
+            <div class="flex flex-col sm:flex-row gap-3">
+                <input type="text" id="quick-input" placeholder="Enter Thai word (e.g. สวัสดี)" class="flex-1 p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none thai-font text-xl">
+                <div class="flex gap-2">
+                    <button onclick="playQuickAudio()" class="flex-1 sm:flex-none bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                        </svg> Listen
+                    </button>
+                    <button onclick="openGoogleTranslate()" class="flex-1 sm:flex-none bg-slate-100 text-slate-700 px-6 py-3 rounded-xl hover:bg-slate-200 transition border flex items-center justify-center">
+                        🌐 Translate
+                    </button>
+                </div>
+            </div>
+            <p class="text-xs text-slate-400 mt-2 italic">* Use "Listen" for browser TTS, or "Translate" to open Google Translate.</p>
+        </div>
+
+        <section id="consonants" class="section">
+            <h2 class="text-2xl font-semibold mb-6 border-b pb-2 text-blue-800">Thai Consonants (44)</h2>
+            <div id="consonants-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <!-- Consonants will be injected here -->
+            </div>
+        </section>
+
+        <section id="vowels" class="section hidden">
+            <h2 class="text-2xl font-semibold mb-6 border-b pb-2 text-emerald-800">Thai Vowels</h2>
+            <div id="vowels-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <!-- Vowels will be injected here -->
+            </div>
+        </section>
+    </div>
+
+    <!-- Chat Widget -->
+    <div id="chat-container" class="fixed bottom-6 right-6 z-50">
+        <!-- Chat Window -->
+        <div id="chat-window" class="chat-hidden absolute bottom-16 right-0 w-80 sm:w-96 h-[500px] bg-white rounded-2xl shadow-2xl border flex flex-col overflow-hidden">
+            <div class="bg-blue-600 p-4 text-white flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <span class="text-xl">🎓</span>
+                    <span class="font-bold text-lg">Thai AI Assistant</span>
+                </div>
+                <button onclick="toggleChat()" class="hover:bg-blue-700 rounded-full p-1 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- API Key Setup (Shown if no key) -->
+            <div id="api-setup" class="p-6 flex-1 flex flex-col justify-center items-center text-center space-y-4">
+                <div class="text-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                </div>
+                <h3 class="font-bold text-slate-800">DeepSeek API Key Required</h3>
+                <p class="text-sm text-slate-600">To use the AI tutor, please enter your DeepSeek API key. Your key is stored locally in your browser.</p>
+                <input type="password" id="api-key-input" placeholder="sk-..." class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                <button onclick="saveApiKey()" class="w-full bg-blue-600 text-white py-2 rounded-lg font-bold hover:bg-blue-700 transition">Save Key</button>
+                <p class="text-[10px] text-slate-400 italic">No DeepSeek key? Visit deepseek.com to get one.</p>
+            </div>
+
+            <!-- Chat Messages (Initially Hidden) -->
+            <div id="chat-messages" class="hidden flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50">
+                <div class="bg-blue-100 p-3 rounded-lg rounded-tl-none mr-8 text-sm text-blue-800">
+                    Sawatdee khrap! 🙏 I'm your Thai study assistant. Ask me anything about Thai words, grammar, or tones!
+                </div>
+            </div>
+
+            <!-- Chat Input (Initially Hidden) -->
+            <div id="chat-input-area" class="hidden p-3 bg-white border-t flex space-x-2">
+                <input type="text" id="user-input" placeholder="Ask a question..." class="flex-1 p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" onkeypress="if(event.key === 'Enter') sendMessage()">
+                <button onclick="sendMessage()" class="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Floating Button -->
+        <button onclick="toggleChat()" class="w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 hover:scale-110 transition-all duration-300 group">
+            <svg id="chat-icon" xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 transition-transform group-hover:rotate-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+            </svg>
+        </button>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
