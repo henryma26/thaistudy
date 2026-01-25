@@ -81,16 +81,21 @@ function createConsonantCard(consonant) {
 
     return `
         <div onclick="playAudio('${consonant.char}')" class="p-4 border rounded-xl shadow-sm hover:shadow-md transition bg-white flex flex-col items-center text-center cursor-pointer group">
-            <div class="thai-font text-5xl mb-2 group-hover:scale-110 transition-transform">${consonant.char}</div>
-            <div class="font-bold text-slate-700">${consonant.name}</div>
+            <div class="flex gap-4 mb-2">
+                <div class="flex flex-col items-center">
+                    <span class="text-[10px] text-slate-400 uppercase font-bold">Traditional</span>
+                    <div class="thai-font text-5xl group-hover:scale-110 transition-transform">${consonant.char}</div>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span class="text-[10px] text-slate-400 uppercase font-bold">Modern</span>
+                    <div class="thai-modern text-5xl group-hover:scale-110 transition-transform">${consonant.char}</div>
+                </div>
+            </div>
+            <div class="thai-font text-lg text-slate-600 mb-1 font-bold">${consonant.thaiName}</div>
+            <div class="font-bold text-slate-400 text-xs mb-1">${consonant.name}</div>
             <div class="text-sm text-slate-500 italic">"${consonant.meaning}"</div>
             <div class="mt-2 px-2 py-0.5 text-[10px] uppercase font-bold rounded ${colorClass}">
                 ${consonant.class} class
-            </div>
-            <div class="mt-2 text-slate-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                </svg>
             </div>
         </div>
     `;
@@ -109,15 +114,20 @@ function createVowelCard(vowel) {
 
     return `
         <div onclick="playAudio('${audioText}')" class="p-4 border rounded-xl shadow-sm hover:shadow-md transition bg-white flex flex-col items-center text-center cursor-pointer group">
-            <div class="thai-font text-5xl mb-2 group-hover:scale-110 transition-transform">${vowel.char}</div>
-            <div class="font-bold text-slate-700">${vowel.name}</div>
+            <div class="flex gap-4 mb-2">
+                <div class="flex flex-col items-center">
+                    <span class="text-[10px] text-slate-400 uppercase font-bold">Trad.</span>
+                    <div class="thai-font text-5xl group-hover:scale-110 transition-transform">${vowel.char}</div>
+                </div>
+                <div class="flex flex-col items-center">
+                    <span class="text-[10px] text-slate-400 uppercase font-bold">Mod.</span>
+                    <div class="thai-modern text-5xl group-hover:scale-110 transition-transform">${vowel.char}</div>
+                </div>
+            </div>
+            <div class="thai-font text-lg text-slate-600 mb-1 font-bold">${vowel.thaiName}</div>
+            <div class="font-bold text-slate-400 text-xs mb-1">${vowel.name}</div>
             <div class="mt-2 px-2 py-0.5 text-[10px] uppercase font-bold rounded border ${typeColor}">
                 ${vowel.type}
-            </div>
-            <div class="mt-2 text-slate-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                </svg>
             </div>
         </div>
     `;
