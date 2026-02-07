@@ -16,6 +16,25 @@
         .thai-modern {
             font-family: 'Noto Sans Thai', sans-serif;
         }
+        /* Flashcard Flip Animation */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
         /* Chat Widget Styles */
         #chat-window {
             transition: transform 0.3s ease, opacity 0.3s ease;
@@ -38,6 +57,7 @@
         <nav class="flex justify-center space-x-4 mb-8">
             <button onclick="showSection('consonants')" class="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">Consonants</button>
             <button onclick="showSection('vowels')" class="px-6 py-2 bg-emerald-600 text-white rounded-full hover:bg-emerald-700 transition">Vowels</button>
+            <button onclick="showSection('vocabulary')" class="px-6 py-2 bg-amber-500 text-white rounded-full hover:bg-amber-600 transition">Vocabulary</button>
         </nav>
 
         <!-- Quick Tools Section -->
@@ -72,6 +92,13 @@
             <h2 class="text-2xl font-semibold mb-6 border-b pb-2 text-emerald-800">Thai Vowels</h2>
             <div id="vowels-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 <!-- Vowels will be injected here -->
+            </div>
+        </section>
+
+        <section id="vocabulary" class="section hidden">
+            <h2 class="text-2xl font-semibold mb-6 border-b pb-2 text-amber-800">Thai Vocabulary Flashcards</h2>
+            <div id="vocab-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <!-- Vocabulary cards will be injected here -->
             </div>
         </section>
     </div>

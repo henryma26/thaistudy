@@ -133,9 +133,35 @@ function createVowelCard(vowel) {
     `;
 }
 
+function createVocabCard(item) {
+    return `
+        <div class="perspective-1000 h-48 group cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
+            <div class="card-inner relative w-full h-full transition-transform duration-500 transform-style-3d">
+                <!-- Front: Thai -->
+                <div class="absolute inset-0 backface-hidden bg-white border-2 border-amber-100 rounded-2xl shadow-sm flex flex-col items-center justify-center p-4">
+                    <div class="thai-font text-4xl mb-2 text-slate-800">${item.thai}</div>
+                    <div class="text-xs text-slate-400 uppercase font-bold">${item.category}</div>
+                    <div class="mt-4 text-[10px] text-amber-400 font-bold">CLICK TO FLIP</div>
+                </div>
+                <!-- Back: Chinese & Pronunciation -->
+                <div class="absolute inset-0 backface-hidden bg-amber-50 border-2 border-amber-200 rounded-2xl shadow-sm flex flex-col items-center justify-center p-4 rotate-y-180">
+                    <div class="text-3xl font-bold text-amber-800 mb-1">${item.traditional}</div>
+                    <div class="text-slate-600 font-medium">${item.pronunciation}</div>
+                    <button onclick="event.stopPropagation(); playAudio('${item.thai}')" class="mt-3 p-2 bg-white rounded-full shadow-sm hover:bg-amber-100 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const consonantsGrid = document.getElementById('consonants-grid');
     const vowelsGrid = document.getElementById('vowels-grid');
+    const vocabGrid = document.getElementById('vocab-grid');
 
     thaiData.consonants.forEach(c => {
         consonantsGrid.innerHTML += createConsonantCard(c);
@@ -144,6 +170,12 @@ document.addEventListener('DOMContentLoaded', () => {
     thaiData.vowels.forEach(v => {
         vowelsGrid.innerHTML += createVowelCard(v);
     });
+
+    if (thaiData.vocabulary) {
+        thaiData.vocabulary.forEach(item => {
+            vocabGrid.innerHTML += createVocabCard(item);
+        });
+    }
 
     // Chat initialization
     checkApiKey();
