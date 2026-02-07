@@ -165,10 +165,78 @@ function createVocabCard(item) {
 
 let activeCategory = 'All';
 
+// --- Vocabulary Logic (Google Sheets Integration) ---
+
+// Replace this URL with your own Google Sheet CSV Publish URL later
+let GOOGLE_SHEET_CSV_URL = ''; 
+let vocabularyData = []; // This will be populated from the sheet
+
+async function loadVocabulary() {
+    const vocabGrid = document.getElementById('vocab-grid');
+    
+    // If no URL is set, show a message
+    if (!GOOGLE_SHEET_CSV_URL) {
+        vocabGrid.innerHTML = `
+            <div class="col-span-full p-8 bg-amber-50 border-2 border-dashed border-amber-200 rounded-2xl text-center">
+                <h3 class="text-amber-800 font-bold mb-2">Google Sheets Not Connected</h3>
+                <p class="text-amber-600 text-sm mb-4">Please follow the instructions to connect your vocabulary spreadsheet.</p>
+                <button onclick="window.open('https://github.com/henryma26/thaistudy#google-sheets-setup', '_blank')" class="bg-amber-500 text-white px-6 py-2 rounded-full hover:bg-amber-600 transition">Setup Instructions</button>
+            </div>
+        `;
+        return;
+    }
+
+    try {
+        const response = await fetch(GOOGLE_SHEET_CSV_URL);
+        const csvText = await response.text();
+        
+        // Simple CSV parser (handles basic Thai/Chinese characters)
+        const rows = csvText.split('\n').slice(1); // Skip header row
+        vocabularyData = rows.map(row => {
+            const columns = row.split(',');
+            if (columns.length < 4) return null;
+            return {
+                thai: columns[0].trim(),
+                traditional: columns[1].trim(),
+                pronunciation: columns[2].trim(),
+                category: columns[3].trim()
+            };
+        }).filter(item => item !== null && item.thai);
+
+        renderInitialVocab();
+        initCategoryChips();
+    } catch (error) {
+        console.error('Error fetching Google Sheet:', error);
+        vocabGrid.innerHTML = '<p class="col-span-full text-center text-red-500">Error loading vocabulary from Google Sheets. Make sure it is "Published to Web" as CSV.</p>';
+    }
+}
+
+let displayedCount = 0;
+const CHUNK_SIZE = 40;
+
+function renderInitialVocab() {
+    const vocabGrid = document.getElementById('vocab-grid');
+    vocabGrid.innerHTML = '';
+    displayedCount = 0;
+    loadMore();
+}
+
+function loadMore() {
+    const vocabGrid = document.getElementById('vocab-grid');
+    const nextBatch = vocabularyData.slice(displayedCount, displayedCount + CHUNK_SIZE);
+    
+    nextBatch.forEach(item => {
+        vocabGrid.innerHTML += createVocabCard(item);
+    });
+    
+    displayedCount += nextBatch.length;
+    filterVocab();
+}
+
 function filterVocab() {
     const query = document.getElementById('vocab-search').value.toLowerCase().trim();
     
-    // If there is a search query, ensure all matching words are loaded
+    // If there is a search query, ensure all matching words are loaded from the full data
     if (query) {
         const vocabGrid = document.getElementById('vocab-grid');
         const existingThaiWords = new Set(Array.from(document.querySelectorAll('.vocab-card')).map(c => c.getAttribute('data-thai')));
@@ -208,62 +276,13 @@ function filterVocab() {
     if (query || activeCategory !== 'All') {
         countDisplay.innerText = `Found ${visibleCount} matching words`;
     } else {
-        countDisplay.innerText = `Showing all ${cards.length} words`;
+        countDisplay.innerText = `Showing all ${vocabularyData.length} words`;
     }
-}
-
-function setCategory(category) {
-    activeCategory = category;
-    
-    // Update UI of chips
-    document.querySelectorAll('.category-chip').forEach(chip => {
-        if (chip.getAttribute('data-category') === category) {
-            chip.classList.add('bg-amber-500', 'text-white');
-            chip.classList.remove('bg-white', 'text-amber-600');
-        } else {
-            chip.classList.remove('bg-amber-500', 'text-white');
-            chip.classList.add('bg-white', 'text-amber-600');
-        }
-    });
-
-    // If we are switching to a specific category, we need to make sure 
-    // all words in that category are actually loaded into the DOM
-    if (category !== 'All') {
-        const vocabGrid = document.getElementById('vocab-grid');
-        const existingThaiWords = new Set(Array.from(document.querySelectorAll('.vocab-card')).map(c => c.getAttribute('data-thai')));
-        
-        vocabularyData.forEach(item => {
-            if (item.category === category && !existingThaiWords.has(item.thai)) {
-                vocabGrid.innerHTML += createVocabCard(item);
-            }
-        });
-    }
-
-    filterVocab();
-}
-
-function initCategoryChips() {
-    if (typeof vocabularyData === 'undefined') return;
-    
-    const chipContainer = document.getElementById('category-chips');
-    const categories = ['All', ...new Set(vocabularyData.map(item => item.category))];
-    
-    chipContainer.innerHTML = '';
-    categories.forEach(cat => {
-        const count = cat === 'All' ? vocabularyData.length : vocabularyData.filter(i => i.category === cat).length;
-        const chip = document.createElement('button');
-        chip.className = `category-chip px-4 py-1.5 rounded-full border border-amber-200 text-sm font-medium transition ${cat === 'All' ? 'bg-amber-500 text-white' : 'bg-white text-amber-600 hover:bg-amber-50'}`;
-        chip.setAttribute('data-category', cat);
-        chip.innerHTML = `${cat} <span class="ml-1 text-[10px] opacity-70">${count}</span>`;
-        chip.onclick = () => setCategory(cat);
-        chipContainer.appendChild(chip);
-    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     const consonantsGrid = document.getElementById('consonants-grid');
     const vowelsGrid = document.getElementById('vowels-grid');
-    const vocabGrid = document.getElementById('vocab-grid');
 
     thaiData.consonants.forEach(c => {
         consonantsGrid.innerHTML += createConsonantCard(c);
@@ -273,40 +292,17 @@ document.addEventListener('DOMContentLoaded', () => {
         vowelsGrid.innerHTML += createVowelCard(v);
     });
 
-    // Load vocabulary from the vocabularyData variable in vocabulary.js
-    if (typeof vocabularyData !== 'undefined') {
-        const vocabGrid = document.getElementById('vocab-grid');
-        const CHUNK_SIZE = 40;
-        let displayedCount = 0;
+    // Start loading from Google Sheets
+    loadVocabulary();
 
-        function loadMore() {
-            const nextBatch = vocabularyData.slice(displayedCount, displayedCount + CHUNK_SIZE);
-            nextBatch.forEach(item => {
-                vocabGrid.innerHTML += createVocabCard(item);
-            });
-            displayedCount += nextBatch.length;
-            
-            // If there's a search query or category filter, we need to re-filter
-            filterVocab();
-        }
-
-        // Initial load
-        loadMore();
-
-        // Infinite scroll logic
-        window.onscroll = function() {
-            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
-                if (displayedCount < vocabularyData.length && activeCategory === 'All' && !document.getElementById('vocab-search').value) {
-                    loadMore();
-                }
+    // Infinite scroll logic
+    window.onscroll = function() {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+            if (displayedCount < vocabularyData.length && activeCategory === 'All' && !document.getElementById('vocab-search').value) {
+                loadMore();
             }
-        };
-        
-        initCategoryChips();
-    } else {
-        console.error('vocabularyData is not defined');
-        vocabGrid.innerHTML = '<p class="col-span-full text-center text-red-500">Error loading vocabulary database.</p>';
-    }
+        }
+    };
 
     // Chat initialization
     checkApiKey();
