@@ -139,6 +139,7 @@ function createVocabCard(item) {
              data-thai="${item.thai}" 
              data-traditional="${item.traditional}" 
              data-pronunciation="${item.pronunciation}"
+             data-category="${item.category}"
              onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
             <div class="card-inner relative w-full h-full transition-transform duration-500 transform-style-3d">
                 <!-- Front: Thai -->
@@ -162,6 +163,8 @@ function createVocabCard(item) {
     `;
 }
 
+let activeCategory = 'All';
+
 function filterVocab() {
     const query = document.getElementById('vocab-search').value.toLowerCase().trim();
     const cards = document.querySelectorAll('.vocab-card');
@@ -171,8 +174,12 @@ function filterVocab() {
         const thai = card.getAttribute('data-thai').toLowerCase();
         const traditional = card.getAttribute('data-traditional').toLowerCase();
         const pronunciation = card.getAttribute('data-pronunciation').toLowerCase();
+        const category = card.getAttribute('data-category');
 
-        if (thai.includes(query) || traditional.includes(query) || pronunciation.includes(query)) {
+        const matchesSearch = thai.includes(query) || traditional.includes(query) || pronunciation.includes(query);
+        const matchesCategory = activeCategory === 'All' || category === activeCategory;
+
+        if (matchesSearch && matchesCategory) {
             card.classList.remove('hidden');
             visibleCount++;
         } else {
@@ -181,11 +188,46 @@ function filterVocab() {
     });
 
     const countDisplay = document.getElementById('vocab-count-display');
-    if (query) {
+    if (query || activeCategory !== 'All') {
         countDisplay.innerText = `Found ${visibleCount} matching words`;
     } else {
         countDisplay.innerText = `Showing all ${cards.length} words`;
     }
+}
+
+function setCategory(category) {
+    activeCategory = category;
+    
+    // Update UI of chips
+    document.querySelectorAll('.category-chip').forEach(chip => {
+        if (chip.getAttribute('data-category') === category) {
+            chip.classList.add('bg-amber-500', 'text-white');
+            chip.classList.remove('bg-white', 'text-amber-600');
+        } else {
+            chip.classList.remove('bg-amber-500', 'text-white');
+            chip.classList.add('bg-white', 'text-amber-600');
+        }
+    });
+
+    filterVocab();
+}
+
+function initCategoryChips() {
+    if (typeof vocabularyData === 'undefined') return;
+    
+    const chipContainer = document.getElementById('category-chips');
+    const categories = ['All', ...new Set(vocabularyData.map(item => item.category))];
+    
+    chipContainer.innerHTML = '';
+    categories.forEach(cat => {
+        const count = cat === 'All' ? vocabularyData.length : vocabularyData.filter(i => i.category === cat).length;
+        const chip = document.createElement('button');
+        chip.className = `category-chip px-4 py-1.5 rounded-full border border-amber-200 text-sm font-medium transition ${cat === 'All' ? 'bg-amber-500 text-white' : 'bg-white text-amber-600 hover:bg-amber-50'}`;
+        chip.setAttribute('data-category', cat);
+        chip.innerHTML = `${cat} <span class="ml-1 text-[10px] opacity-70">${count}</span>`;
+        chip.onclick = () => setCategory(cat);
+        chipContainer.appendChild(chip);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -206,6 +248,8 @@ document.addEventListener('DOMContentLoaded', () => {
         vocabularyData.forEach(item => {
             vocabGrid.innerHTML += createVocabCard(item);
         });
+        
+        initCategoryChips();
         // Update count display after loading
         filterVocab();
     } else {

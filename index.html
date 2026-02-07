@@ -99,7 +99,7 @@
             <h2 class="text-2xl font-semibold mb-6 border-b pb-2 text-amber-800">Thai Vocabulary Flashcards</h2>
             
             <!-- Search Bar for Vocabulary -->
-            <div class="mb-8 max-w-md mx-auto">
+            <div class="mb-4 max-w-md mx-auto">
                 <div class="relative">
                     <input type="text" id="vocab-search" oninput="filterVocab()" placeholder="Search Thai, Chinese, or Pronunciation..." class="w-full p-3 pl-10 border-2 border-amber-100 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none shadow-sm">
                     <div class="absolute left-3 top-3.5 text-amber-300">
@@ -108,8 +108,14 @@
                         </svg>
                     </div>
                 </div>
-                <p class="text-center text-xs text-slate-400 mt-2" id="vocab-count-display"></p>
             </div>
+
+            <!-- Category Filter Chips -->
+            <div id="category-chips" class="flex flex-wrap justify-center gap-2 mb-8 max-w-4xl mx-auto">
+                <!-- Chips will be injected here -->
+            </div>
+
+            <p class="text-center text-xs text-slate-400 mb-6" id="vocab-count-display"></p>
 
             <div id="vocab-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 <!-- Vocabulary cards will be injected here -->
