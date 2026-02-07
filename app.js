@@ -245,13 +245,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Load vocabulary from the vocabularyData variable in vocabulary.js
     if (typeof vocabularyData !== 'undefined') {
-        vocabularyData.forEach(item => {
-            vocabGrid.innerHTML += createVocabCard(item);
-        });
+        const vocabGrid = document.getElementById('vocab-grid');
+        const CHUNK_SIZE = 40;
+        let displayedCount = 0;
+
+        function loadMore() {
+            const nextBatch = vocabularyData.slice(displayedCount, displayedCount + CHUNK_SIZE);
+            nextBatch.forEach(item => {
+                vocabGrid.innerHTML += createVocabCard(item);
+            });
+            displayedCount += nextBatch.length;
+            
+            // If there's a search query or category filter, we need to re-filter
+            filterVocab();
+        }
+
+        // Initial load
+        loadMore();
+
+        // Infinite scroll logic
+        window.onscroll = function() {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+                if (displayedCount < vocabularyData.length && activeCategory === 'All' && !document.getElementById('vocab-search').value) {
+                    loadMore();
+                }
+            }
+        };
         
         initCategoryChips();
-        // Update count display after loading
-        filterVocab();
     } else {
         console.error('vocabularyData is not defined');
         vocabGrid.innerHTML = '<p class="col-span-full text-center text-red-500">Error loading vocabulary database.</p>';
