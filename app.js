@@ -167,6 +167,23 @@ let activeCategory = 'All';
 
 function filterVocab() {
     const query = document.getElementById('vocab-search').value.toLowerCase().trim();
+    
+    // If there is a search query, ensure all matching words are loaded
+    if (query) {
+        const vocabGrid = document.getElementById('vocab-grid');
+        const existingThaiWords = new Set(Array.from(document.querySelectorAll('.vocab-card')).map(c => c.getAttribute('data-thai')));
+        
+        vocabularyData.forEach(item => {
+            const matches = item.thai.toLowerCase().includes(query) || 
+                          item.traditional.toLowerCase().includes(query) || 
+                          item.pronunciation.toLowerCase().includes(query);
+            
+            if (matches && !existingThaiWords.has(item.thai)) {
+                vocabGrid.innerHTML += createVocabCard(item);
+            }
+        });
+    }
+
     const cards = document.querySelectorAll('.vocab-card');
     let visibleCount = 0;
 
@@ -208,6 +225,19 @@ function setCategory(category) {
             chip.classList.add('bg-white', 'text-amber-600');
         }
     });
+
+    // If we are switching to a specific category, we need to make sure 
+    // all words in that category are actually loaded into the DOM
+    if (category !== 'All') {
+        const vocabGrid = document.getElementById('vocab-grid');
+        const existingThaiWords = new Set(Array.from(document.querySelectorAll('.vocab-card')).map(c => c.getAttribute('data-thai')));
+        
+        vocabularyData.forEach(item => {
+            if (item.category === category && !existingThaiWords.has(item.thai)) {
+                vocabGrid.innerHTML += createVocabCard(item);
+            }
+        });
+    }
 
     filterVocab();
 }
