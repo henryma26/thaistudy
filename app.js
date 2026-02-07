@@ -165,6 +165,54 @@ function createVocabCard(item) {
 
 let activeCategory = 'All';
 
+function setCategory(category) {
+    activeCategory = category;
+    
+    // Update UI of chips
+    document.querySelectorAll('.category-chip').forEach(chip => {
+        if (chip.getAttribute('data-category') === category) {
+            chip.classList.add('bg-amber-500', 'text-white');
+            chip.classList.remove('bg-white', 'text-amber-600');
+        } else {
+            chip.classList.remove('bg-amber-500', 'text-white');
+            chip.classList.add('bg-white', 'text-amber-600');
+        }
+    });
+
+    // If we are switching to a specific category, we need to make sure 
+    // all words in that category are actually loaded into the DOM
+    if (category !== 'All') {
+        const vocabGrid = document.getElementById('vocab-grid');
+        const existingThaiWords = new Set(Array.from(document.querySelectorAll('.vocab-card')).map(c => c.getAttribute('data-thai')));
+        
+        vocabularyData.forEach(item => {
+            if (item.category === category && !existingThaiWords.has(item.thai)) {
+                vocabGrid.innerHTML += createVocabCard(item);
+            }
+        });
+    }
+
+    filterVocab();
+}
+
+function initCategoryChips() {
+    if (typeof vocabularyData === 'undefined' || vocabularyData.length === 0) return;
+    
+    const chipContainer = document.getElementById('category-chips');
+    const categories = ['All', ...new Set(vocabularyData.map(item => item.category))];
+    
+    chipContainer.innerHTML = '';
+    categories.forEach(cat => {
+        const count = cat === 'All' ? vocabularyData.length : vocabularyData.filter(i => i.category === cat).length;
+        const chip = document.createElement('button');
+        chip.className = `category-chip px-4 py-1.5 rounded-full border border-amber-200 text-sm font-medium transition ${cat === 'All' ? 'bg-amber-500 text-white' : 'bg-white text-amber-600 hover:bg-amber-50'}`;
+        chip.setAttribute('data-category', cat);
+        chip.innerHTML = `${cat} <span class="ml-1 text-[10px] opacity-70">${count}</span>`;
+        chip.onclick = () => setCategory(cat);
+        chipContainer.appendChild(chip);
+    });
+}
+
 // --- Vocabulary Logic (Google Sheets Integration) ---
 
 // Replace this URL with your own Google Sheet CSV Publish URL later
