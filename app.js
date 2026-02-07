@@ -201,11 +201,20 @@ document.addEventListener('DOMContentLoaded', () => {
         vowelsGrid.innerHTML += createVowelCard(v);
     });
 
-    if (thaiData.vocabulary) {
-        thaiData.vocabulary.forEach(item => {
-            vocabGrid.innerHTML += createVocabCard(item);
+    // Load vocabulary from JSON file
+    fetch('vocabulary.json')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(item => {
+                vocabGrid.innerHTML += createVocabCard(item);
+            });
+            // Update count display after loading
+            filterVocab();
+        })
+        .catch(error => {
+            console.error('Error loading vocabulary:', error);
+            vocabGrid.innerHTML = '<p class="col-span-full text-center text-red-500">Error loading vocabulary database.</p>';
         });
-    }
 
     // Chat initialization
     checkApiKey();
