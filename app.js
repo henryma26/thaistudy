@@ -327,7 +327,8 @@ function filterVocab() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+function initConsonantsAndVowels() {
+    console.log('Initializing grids...');
     const consonantsGrid = document.getElementById('consonants-grid');
     const vowelsGrid = document.getElementById('vowels-grid');
 
@@ -336,6 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
         thaiData.consonants.forEach(c => {
             consonantsGrid.innerHTML += createConsonantCard(c);
         });
+        console.log('Consonants rendered');
     }
 
     if (vowelsGrid && typeof thaiData !== 'undefined' && thaiData.vowels) {
@@ -343,9 +345,14 @@ document.addEventListener('DOMContentLoaded', () => {
         thaiData.vowels.forEach(v => {
             vowelsGrid.innerHTML += createVowelCard(v);
         });
+        console.log('Vowels rendered');
     }
+}
 
+document.addEventListener('DOMContentLoaded', () => {
+    initConsonantsAndVowels();
     loadVocabulary();
+    // ... rest of the code ...
 
     window.onscroll = function() {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {

@@ -182,5 +182,12 @@
     <script src="data.js"></script>
     <script src="vocabulary.js"></script>
     <script src="app.js"></script>
+    <script>
+        // Emergency Debug: Force load if DOMContentLoaded already fired
+        if (document.readyState === "complete" || document.readyState === "interactive") {
+            console.log("Emergency initialization triggered");
+            if (typeof initConsonantsAndVowels === 'function') initConsonantsAndVowels();
+        }
+    </script>
 </body>
 </html>
