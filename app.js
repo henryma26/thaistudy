@@ -332,13 +332,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const consonantsGrid = document.getElementById('consonants-grid');
     const vowelsGrid = document.getElementById('vowels-grid');
 
-    thaiData.consonants.forEach(c => {
-        consonantsGrid.innerHTML += createConsonantCard(c);
-    });
+    if (consonantsGrid && thaiData.consonants) {
+        thaiData.consonants.forEach(c => {
+            consonantsGrid.innerHTML += createConsonantCard(c);
+        });
+    }
 
-    thaiData.vowels.forEach(v => {
-        vowelsGrid.innerHTML += createVowelCard(v);
-    });
+    if (vowelsGrid && thaiData.vowels) {
+        thaiData.vowels.forEach(v => {
+            vowelsGrid.innerHTML += createVowelCard(v);
+        });
+    }
 
     // Start loading from Google Sheets
     loadVocabulary();
