@@ -201,20 +201,17 @@ document.addEventListener('DOMContentLoaded', () => {
         vowelsGrid.innerHTML += createVowelCard(v);
     });
 
-    // Load vocabulary from JSON file
-    fetch('vocabulary.json')
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(item => {
-                vocabGrid.innerHTML += createVocabCard(item);
-            });
-            // Update count display after loading
-            filterVocab();
-        })
-        .catch(error => {
-            console.error('Error loading vocabulary:', error);
-            vocabGrid.innerHTML = '<p class="col-span-full text-center text-red-500">Error loading vocabulary database.</p>';
+    // Load vocabulary from the vocabularyData variable in vocabulary.js
+    if (typeof vocabularyData !== 'undefined') {
+        vocabularyData.forEach(item => {
+            vocabGrid.innerHTML += createVocabCard(item);
         });
+        // Update count display after loading
+        filterVocab();
+    } else {
+        console.error('vocabularyData is not defined');
+        vocabGrid.innerHTML = '<p class="col-span-full text-center text-red-500">Error loading vocabulary database.</p>';
+    }
 
     // Chat initialization
     checkApiKey();
