@@ -1,4 +1,4 @@
-const vocabularyData = [
+const vocabularyDataList = [
     { "thai": "สวัสดี", "traditional": "你好", "pronunciation": "sa-wat-dee", "category": "Greetings" },
     { "thai": "ขอบคุณ", "traditional": "謝謝", "pronunciation": "khop-khun", "category": "Greetings" },
     { "thai": "ใช่", "traditional": "是", "pronunciation": "chai", "category": "Basics" },
