@@ -25,7 +25,10 @@ function showSection(sectionId) {
     document.querySelectorAll('.section').forEach(section => {
         section.classList.add('hidden');
     });
-    document.getElementById(sectionId).classList.remove('hidden');
+    const target = document.getElementById(sectionId);
+    if (target) {
+        target.classList.remove('hidden');
+    }
 }
 
 let voices = [];
@@ -215,14 +218,12 @@ function initCategoryChips() {
 
 // --- Vocabulary Logic (Google Sheets Integration) ---
 
-// Replace this URL with your own Google Sheet CSV Publish URL later
 let GOOGLE_SHEET_CSV_URL = ''; 
 let vocabularyData = []; // This will be populated from the sheet
 
 async function loadVocabulary() {
     const vocabGrid = document.getElementById('vocab-grid');
     
-    // If no URL is set, show a message
     if (!GOOGLE_SHEET_CSV_URL) {
         vocabGrid.innerHTML = `
             <div class="col-span-full p-8 bg-amber-50 border-2 border-dashed border-amber-200 rounded-2xl text-center">
@@ -238,8 +239,7 @@ async function loadVocabulary() {
         const response = await fetch(GOOGLE_SHEET_CSV_URL);
         const csvText = await response.text();
         
-        // Simple CSV parser (handles basic Thai/Chinese characters)
-        const rows = csvText.split('\n').slice(1); // Skip header row
+        const rows = csvText.split('\n').slice(1); 
         vocabularyData = rows.map(row => {
             const columns = row.split(',');
             if (columns.length < 4) return null;
@@ -284,7 +284,6 @@ function loadMore() {
 function filterVocab() {
     const query = document.getElementById('vocab-search').value.toLowerCase().trim();
     
-    // If there is a search query, ensure all matching words are loaded from the full data
     if (query) {
         const vocabGrid = document.getElementById('vocab-grid');
         const existingThaiWords = new Set(Array.from(document.querySelectorAll('.vocab-card')).map(c => c.getAttribute('data-thai')));
@@ -332,22 +331,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const consonantsGrid = document.getElementById('consonants-grid');
     const vowelsGrid = document.getElementById('vowels-grid');
 
-    if (consonantsGrid && thaiData.consonants) {
+    if (consonantsGrid && typeof thaiData !== 'undefined' && thaiData.consonants) {
+        consonantsGrid.innerHTML = '';
         thaiData.consonants.forEach(c => {
             consonantsGrid.innerHTML += createConsonantCard(c);
         });
     }
 
-    if (vowelsGrid && thaiData.vowels) {
+    if (vowelsGrid && typeof thaiData !== 'undefined' && thaiData.vowels) {
+        vowelsGrid.innerHTML = '';
         thaiData.vowels.forEach(v => {
             vowelsGrid.innerHTML += createVowelCard(v);
         });
     }
 
-    // Start loading from Google Sheets
     loadVocabulary();
 
-    // Infinite scroll logic
     window.onscroll = function() {
         if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
             if (displayedCount < vocabularyData.length && activeCategory === 'All' && !document.getElementById('vocab-search').value) {
@@ -356,7 +355,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Chat initialization
     checkApiKey();
 });
 
@@ -399,11 +397,9 @@ async function sendMessage() {
     const message = input.value.trim();
     if (!message) return;
 
-    // Add user message to UI
     appendMessage('user', message);
     input.value = '';
 
-    // Add loading indicator
     const loadingId = 'loading-' + Date.now();
     appendMessage('assistant', 'Thinking...', loadingId);
 
@@ -432,7 +428,6 @@ async function sendMessage() {
         
         const assistantMessage = data.choices[0].message.content;
         
-        // Remove loading and add response
         document.getElementById(loadingId).remove();
         appendMessage('assistant', assistantMessage);
 
@@ -457,6 +452,5 @@ function appendMessage(role, text, id = null) {
     msgDiv.innerText = text;
     container.appendChild(msgDiv);
     
-    // Auto-scroll
     container.scrollTop = container.scrollHeight;
 }
