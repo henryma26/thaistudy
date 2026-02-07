@@ -135,7 +135,11 @@ function createVowelCard(vowel) {
 
 function createVocabCard(item) {
     return `
-        <div class="perspective-1000 h-48 group cursor-pointer" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
+        <div class="perspective-1000 h-48 group cursor-pointer vocab-card" 
+             data-thai="${item.thai}" 
+             data-traditional="${item.traditional}" 
+             data-pronunciation="${item.pronunciation}"
+             onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
             <div class="card-inner relative w-full h-full transition-transform duration-500 transform-style-3d">
                 <!-- Front: Thai -->
                 <div class="absolute inset-0 backface-hidden bg-white border-2 border-amber-100 rounded-2xl shadow-sm flex flex-col items-center justify-center p-4">
@@ -156,6 +160,32 @@ function createVocabCard(item) {
             </div>
         </div>
     `;
+}
+
+function filterVocab() {
+    const query = document.getElementById('vocab-search').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.vocab-card');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+        const thai = card.getAttribute('data-thai').toLowerCase();
+        const traditional = card.getAttribute('data-traditional').toLowerCase();
+        const pronunciation = card.getAttribute('data-pronunciation').toLowerCase();
+
+        if (thai.includes(query) || traditional.includes(query) || pronunciation.includes(query)) {
+            card.classList.remove('hidden');
+            visibleCount++;
+        } else {
+            card.classList.add('hidden');
+        }
+    });
+
+    const countDisplay = document.getElementById('vocab-count-display');
+    if (query) {
+        countDisplay.innerText = `Found ${visibleCount} matching words`;
+    } else {
+        countDisplay.innerText = `Showing all ${cards.length} words`;
+    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

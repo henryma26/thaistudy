@@ -97,6 +97,20 @@
 
         <section id="vocabulary" class="section hidden">
             <h2 class="text-2xl font-semibold mb-6 border-b pb-2 text-amber-800">Thai Vocabulary Flashcards</h2>
+            
+            <!-- Search Bar for Vocabulary -->
+            <div class="mb-8 max-w-md mx-auto">
+                <div class="relative">
+                    <input type="text" id="vocab-search" oninput="filterVocab()" placeholder="Search Thai, Chinese, or Pronunciation..." class="w-full p-3 pl-10 border-2 border-amber-100 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none shadow-sm">
+                    <div class="absolute left-3 top-3.5 text-amber-300">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                </div>
+                <p class="text-center text-xs text-slate-400 mt-2" id="vocab-count-display"></p>
+            </div>
+
             <div id="vocab-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 <!-- Vocabulary cards will be injected here -->
             </div>
