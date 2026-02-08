@@ -1,5 +1,5 @@
 // --- 1. CONFIGURATION ---
-let GOOGLE_SHEET_CSV_URL = ''; // Paste your link here later
+// We are using vocabulary.js for data storage to avoid browser CORS issues.
 
 // --- 2. CORE UI LOGIC ---
 function showSection(sectionId) {
@@ -78,7 +78,7 @@ function createVocabCard(item) {
         <div class="perspective-1000 h-48 vocab-card" data-thai="${item.thai}" data-trad="${item.traditional}" data-pron="${item.pronunciation}" data-cat="${item.category}" onclick="this.querySelector('.card-inner').classList.toggle('rotate-y-180')">
             <div class="card-inner relative w-full h-full transition-transform duration-500 transform-style-3d cursor-pointer">
                 <div class="absolute inset-0 backface-hidden bg-white border-2 border-amber-100 rounded-2xl flex flex-col items-center justify-center p-4">
-                    <div class="thai-font text-4xl mb-2 text-slate-800">${item.thai}</div>
+                    <div class="thai-font text-4xl mb-2">${item.thai}</div>
                     <div class="text-xs text-slate-400 uppercase font-bold">${item.category}</div>
                 </div>
                 <div class="absolute inset-0 backface-hidden bg-amber-50 border-2 border-amber-200 rounded-2xl flex flex-col items-center justify-center p-4 rotate-y-180">
@@ -94,54 +94,21 @@ function createVocabCard(item) {
 let vocabularyData = [];
 let activeCategory = 'All';
 
-async function loadVocabulary() {
-    console.log('Attempting to load vocabulary...');
-    if (GOOGLE_SHEET_CSV_URL) {
-        console.log('Fetching from Google Sheets:', GOOGLE_SHEET_CSV_URL);
-        try {
-            const res = await fetch(GOOGLE_SHEET_CSV_URL);
-            const csv = await res.text();
-            console.log('CSV data received, length:', csv.length);
-            
-            // Improved CSV parser to handle quotes and commas within cells
-            const rows = csv.split(/\r?\n/).slice(1); 
-            const parsedData = rows.map(row => {
-                // Simple regex to split by comma but ignore commas inside quotes
-                const cols = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || row.split(',');
-                if (cols.length >= 4) {
-                    return { 
-                        thai: cols[0].replace(/"/g, '').trim(), 
-                        traditional: cols[1].replace(/"/g, '').trim(), 
-                        pronunciation: cols[2].replace(/"/g, '').trim(), 
-                        category: cols[3].replace(/"/g, '').trim() 
-                    };
-                }
-                return null;
-            }).filter(i => i && i.thai);
-
-            if (parsedData.length > 0) {
-                vocabularyData = parsedData;
-                console.log('Loaded words from Google Sheets:', vocabularyData.length);
-            }
-        } catch (e) { 
-            console.error("Sheet load failed:", e); 
-        }
+function loadVocabulary() {
+    // Load from the global vocabularyDataList defined in vocabulary.js
+    if (typeof vocabularyDataList !== 'undefined') {
+        vocabularyData = vocabularyDataList;
+        initCategoryChips();
+        renderVocab();
+    } else {
+        console.error("vocabularyDataList not found. Make sure vocabulary.js is loaded.");
+        const grid = document.getElementById('vocab-grid');
+        if (grid) grid.innerHTML = '<p class="col-span-full text-center text-red-500">Error: Vocabulary data file not found.</p>';
     }
-    
-    // Fallback to local data if sheet empty or failed
-    if (vocabularyData.length === 0) {
-        console.log('No Google Sheets data, falling back to vocabulary.js');
-        if (typeof vocabularyDataList !== 'undefined') {
-            vocabularyData = vocabularyDataList;
-        }
-    }
-
-    initCategoryChips();
-    renderVocab();
 }
 
 function filterVocab() {
-    const query = (document.getElementById('vocab-search').value || "").toLowerCase();
+    const query = (document.getElementById('vocab-search').value || "").toLowerCase().trim();
     document.querySelectorAll('.vocab-card').forEach(card => {
         const matchSearch = card.dataset.thai.toLowerCase().includes(query) || 
                           card.dataset.trad.toLowerCase().includes(query) || 
