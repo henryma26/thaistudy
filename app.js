@@ -95,22 +95,45 @@ let vocabularyData = [];
 let activeCategory = 'All';
 
 async function loadVocabulary() {
+    console.log('Attempting to load vocabulary...');
     if (GOOGLE_SHEET_CSV_URL) {
+        console.log('Fetching from Google Sheets:', GOOGLE_SHEET_CSV_URL);
         try {
             const res = await fetch(GOOGLE_SHEET_CSV_URL);
             const csv = await res.text();
-            vocabularyData = csv.split('\n').slice(1).map(row => {
-                const cols = row.split(',');
-                return cols.length >= 4 ? { thai: cols[0].trim(), traditional: cols[1].trim(), pronunciation: cols[2].trim(), category: cols[3].trim() } : null;
+            console.log('CSV data received, length:', csv.length);
+            
+            // Improved CSV parser to handle quotes and commas within cells
+            const rows = csv.split(/\r?\n/).slice(1); 
+            const parsedData = rows.map(row => {
+                // Simple regex to split by comma but ignore commas inside quotes
+                const cols = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || row.split(',');
+                if (cols.length >= 4) {
+                    return { 
+                        thai: cols[0].replace(/"/g, '').trim(), 
+                        traditional: cols[1].replace(/"/g, '').trim(), 
+                        pronunciation: cols[2].replace(/"/g, '').trim(), 
+                        category: cols[3].replace(/"/g, '').trim() 
+                    };
+                }
+                return null;
             }).filter(i => i && i.thai);
+
+            if (parsedData.length > 0) {
+                vocabularyData = parsedData;
+                console.log('Loaded words from Google Sheets:', vocabularyData.length);
+            }
         } catch (e) { 
-            console.error("Sheet load failed", e); 
+            console.error("Sheet load failed:", e); 
         }
     }
     
     // Fallback to local data if sheet empty or failed
-    if (vocabularyData.length === 0 && typeof vocabularyDataList !== 'undefined') {
-        vocabularyData = vocabularyDataList;
+    if (vocabularyData.length === 0) {
+        console.log('No Google Sheets data, falling back to vocabulary.js');
+        if (typeof vocabularyDataList !== 'undefined') {
+            vocabularyData = vocabularyDataList;
+        }
     }
 
     initCategoryChips();
