@@ -33,13 +33,21 @@ function playAudio(text) {
 function createConsonantCard(c) {
     const colors = { 'mid': 'bg-blue-50 text-blue-700', 'high': 'bg-red-50 text-red-700', 'low': 'bg-green-50 text-green-700' };
     return `
-        <div onclick="playAudio('${c.char}')" class="p-4 border rounded-xl bg-white flex flex-col items-center text-center cursor-pointer hover:shadow-md transition">
-            <div class="flex gap-2 mb-2">
-                <div class="thai-font text-4xl">${c.char}</div>
-                <div class="thai-modern text-4xl text-slate-300">${c.char}</div>
+        <div onclick="playAudio('${c.char}')" class="p-4 border rounded-xl bg-white flex flex-col items-center text-center cursor-pointer hover:shadow-md transition min-h-[160px] justify-between">
+            <div class="flex flex-col items-center gap-1 w-full">
+                <div class="flex justify-center items-end gap-3 mb-1">
+                    <div class="flex flex-col items-center">
+                        <span class="text-[8px] text-slate-400 uppercase font-bold leading-none mb-1">Trad.</span>
+                        <div class="thai-font text-4xl leading-tight">${c.char}</div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-[8px] text-slate-400 uppercase font-bold leading-none mb-1">Mod.</span>
+                        <div class="thai-modern text-4xl text-slate-300 leading-tight">${c.char}</div>
+                    </div>
+                </div>
+                <div class="thai-font text-sm font-bold text-slate-600">${c.thaiName}</div>
+                <div class="text-xs text-slate-400">${c.name}</div>
             </div>
-            <div class="thai-font text-sm font-bold text-slate-600">${c.thaiName}</div>
-            <div class="text-xs text-slate-400">${c.name}</div>
             <div class="mt-2 px-2 py-0.5 text-[10px] font-bold rounded ${colors[c.class] || 'bg-slate-50'}">${c.class} class</div>
         </div>`;
 }
@@ -47,13 +55,21 @@ function createConsonantCard(c) {
 function createVowelCard(v) {
     const audioText = v.char.replace('-', 'ก');
     return `
-        <div onclick="playAudio('${audioText}')" class="p-4 border rounded-xl bg-white flex flex-col items-center text-center cursor-pointer hover:shadow-md transition">
-            <div class="flex gap-2 mb-2">
-                <div class="thai-font text-4xl">${v.char}</div>
-                <div class="thai-modern text-4xl text-slate-300">${v.char}</div>
+        <div onclick="playAudio('${audioText}')" class="p-4 border rounded-xl bg-white flex flex-col items-center text-center cursor-pointer hover:shadow-md transition min-h-[140px] justify-between">
+            <div class="flex flex-col items-center gap-1 w-full">
+                <div class="flex justify-center items-end gap-3 mb-1">
+                    <div class="flex flex-col items-center">
+                        <span class="text-[8px] text-slate-400 uppercase font-bold leading-none mb-1">Trad.</span>
+                        <div class="thai-font text-4xl leading-tight">${v.char}</div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <span class="text-[8px] text-slate-400 uppercase font-bold leading-none mb-1">Mod.</span>
+                        <div class="thai-modern text-4xl text-slate-300 leading-tight">${v.char}</div>
+                    </div>
+                </div>
+                <div class="thai-font text-sm font-bold text-slate-600 line-clamp-1">${v.thaiName}</div>
             </div>
-            <div class="thai-font text-sm font-bold text-slate-600">${v.thaiName}</div>
-            <div class="text-xs text-slate-400">${v.name}</div>
+            <div class="text-xs text-slate-400 mt-1">${v.name}</div>
         </div>`;
 }
 
