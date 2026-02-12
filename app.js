@@ -166,4 +166,143 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     loadVocabulary();
+    
+    // Chat initialization
+    checkApiKey();
 });
+
+// --- 7. CHAT & LLM LOGIC ---
+
+let deepseekKey = localStorage.getItem('deepseek_api_key');
+
+function toggleChat() {
+    const window = document.getElementById('chat-window');
+    if (window) {
+        window.classList.toggle('chat-hidden');
+    }
+}
+
+function checkApiKey() {
+    const apiSetup = document.getElementById('api-setup');
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInputArea = document.getElementById('chat-input-area');
+
+    if (!apiSetup || !chatMessages || !chatInputArea) return;
+
+    if (deepseekKey) {
+        apiSetup.classList.add('hidden');
+        chatMessages.classList.remove('hidden');
+        chatInputArea.classList.remove('hidden');
+    } else {
+        apiSetup.classList.remove('hidden');
+        chatMessages.classList.add('hidden');
+        chatInputArea.classList.add('hidden');
+    }
+}
+
+function saveApiKey() {
+    const input = document.getElementById('api-key-input');
+    if (input && input.value.trim()) {
+        deepseekKey = input.value.trim();
+        localStorage.setItem('deepseek_api_key', deepseekKey);
+        checkApiKey();
+    }
+}
+
+async function sendMessage() {
+    const input = document.getElementById('user-input');
+    if (!input) return;
+    const message = input.value.trim();
+    if (!message) return;
+
+    // Add user message to UI
+    appendMessage('user', message);
+    input.value = '';
+
+    // Add loading indicator
+    const loadingId = 'loading-' + Date.now();
+    appendMessage('assistant', 'Thinking...', loadingId);
+
+    try {
+        const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${deepseekKey}`
+            },
+            body: JSON.stringify({
+                model: "deepseek-chat",
+                messages: [
+                    {
+                        role: "system", 
+                        content: "You are a helpful Thai language tutor. The user is a beginner studying for a professional Thai exam. Explain grammar, words, and tones clearly in Cantonese (using Traditional Chinese characters). Use Thai script where helpful."
+                    },
+                    { role: "user", content: message }
+                ]
+            })
+        });
+
+        const data = await response.json();
+        
+        if (data.error) throw new Error(data.error.message);
+        
+        const assistantMessage = data.choices[0].message.content;
+        
+        // Remove loading and add response
+        const loadingEl = document.getElementById(loadingId);
+        if (loadingEl) loadingEl.remove();
+        appendMessage('assistant', assistantMessage);
+
+    } catch (error) {
+        console.error('AI Error:', error);
+        const loadingEl = document.getElementById(loadingId);
+        if (loadingEl) loadingEl.innerText = "Error: " + error.message;
+    }
+}
+
+function appendMessage(role, text, id = null) {
+    const container = document.getElementById('chat-messages');
+    if (!container) return;
+    const msgDiv = document.createElement('div');
+    
+    if (id) msgDiv.id = id;
+    
+    if (role === 'user') {
+        msgDiv.className = 'bg-white border p-3 rounded-lg rounded-tr-none ml-8 text-sm shadow-sm';
+    } else {
+        msgDiv.className = 'bg-blue-100 p-3 rounded-lg rounded-tl-none mr-8 text-sm text-blue-800 shadow-sm markdown-content';
+    }
+    
+    msgDiv.innerText = text;
+    container.appendChild(msgDiv);
+    
+    // Auto-scroll
+    container.scrollTop = container.scrollHeight;
+}
+
+// --- Quick Tools Logic ---
+
+function playQuickAudio() {
+    const input = document.getElementById('quick-input');
+    if (!input) return;
+    const text = input.value.trim();
+    if (text) {
+        playAudio(text);
+    } else {
+        alert("Please enter some Thai text first!");
+    }
+}
+
+function openGoogleTranslate() {
+    const input = document.getElementById('quick-input');
+    if (!input) return;
+    const text = input.value.trim();
+    if (text) {
+        // Direct link to Google Translate with Thai as source and English as target
+        const url = `https://translate.google.com/?sl=th&tl=en&text=${encodeURIComponent(text)}&op=translate`;
+        window.open(url, '_blank');
+    } else {
+        // Just open Google Translate if input is empty
+        window.open('https://translate.google.com/?sl=th&tl=en&op=translate', '_blank');
+    }
+}
