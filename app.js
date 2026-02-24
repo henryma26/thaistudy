@@ -167,9 +167,159 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadVocabulary();
     
+    // Notebook initialization
+    loadNotes();
+    
     // Chat initialization
     checkApiKey();
 });
+
+// --- 8. NOTEBOOK LOGIC ---
+
+let myNotes = JSON.parse(localStorage.getItem('thai_notes') || '[]');
+
+function saveNote() {
+    const thai = document.getElementById('note-thai').value.trim();
+    const trad = document.getElementById('note-trad').value.trim();
+    const context = document.getElementById('note-context').value.trim();
+
+    if (!thai || !trad) {
+        alert("Please enter both the Thai word and its translation.");
+        return;
+    }
+
+    const newNote = {
+        id: Date.now(),
+        thai,
+        trad,
+        context,
+        date: new Date().toLocaleDateString()
+    };
+
+    myNotes.unshift(newNote);
+    localStorage.setItem('thai_notes', JSON.stringify(myNotes));
+    
+    // Clear inputs
+    document.getElementById('note-thai').value = '';
+    document.getElementById('note-trad').value = '';
+    document.getElementById('note-context').value = '';
+    
+    renderNotes();
+}
+
+function loadNotes() {
+    renderNotes();
+}
+
+function renderNotes() {
+    const list = document.getElementById('notes-list');
+    const noNotes = document.getElementById('no-notes');
+    if (!list || !noNotes) return;
+
+    if (myNotes.length === 0) {
+        list.innerHTML = '';
+        noNotes.classList.remove('hidden');
+        return;
+    }
+
+    noNotes.classList.add('hidden');
+    list.innerHTML = myNotes.map(note => `
+        <div class="bg-white p-5 rounded-2xl shadow-sm border border-indigo-50 hover:border-indigo-200 transition group relative">
+            <button onclick="deleteNote(${note.id})" class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition p-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+            </button>
+            <div class="flex justify-between items-start mb-2">
+                <div class="thai-font text-3xl text-indigo-900">${note.thai}</div>
+                <button onclick="playAudio('${note.thai}')" class="text-indigo-400 hover:text-indigo-600 transition">🔊</button>
+            </div>
+            <div class="text-lg font-bold text-slate-700 mb-2">${note.trad}</div>
+            ${note.context ? `<div class="text-xs text-slate-500 bg-slate-50 p-2 rounded-lg italic border-l-2 border-indigo-200">${note.context}</div>` : ''}
+            <div class="text-[10px] text-slate-300 mt-3 flex justify-between items-center">
+                <span>Added on ${note.date}</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+function filterNotes() {
+    const query = document.getElementById('note-search').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('#notes-list > div');
+    
+    let visibleCount = 0;
+    cards.forEach((card, index) => {
+        const note = myNotes[index];
+        const match = note.thai.toLowerCase().includes(query) || 
+                      note.trad.toLowerCase().includes(query) || 
+                      (note.context && note.context.toLowerCase().includes(query));
+        
+        card.classList.toggle('hidden', !match);
+        if (match) visibleCount++;
+    });
+
+    const noNotes = document.getElementById('no-notes');
+    if (visibleCount === 0 && query !== '') {
+        noNotes.classList.remove('hidden');
+        noNotes.querySelector('p').innerText = "No matching words found in your notebook.";
+    } else if (myNotes.length > 0) {
+        noNotes.classList.add('hidden');
+    }
+}
+
+function deleteNote(id) {
+    if (confirm("Are you sure you want to remove this word from your notebook?")) {
+        myNotes = myNotes.filter(n => n.id !== id);
+        localStorage.setItem('thai_notes', JSON.stringify(myNotes));
+        renderNotes();
+    }
+}
+
+function exportNotes() {
+    if (myNotes.length === 0) {
+        alert("Your notebook is empty. Nothing to export!");
+        return;
+    }
+    const dataStr = JSON.stringify(myNotes, null, 2);
+    const blob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `thai_notebook_export_${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+}
+
+function importNotes(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const imported = JSON.parse(e.target.result);
+            if (!Array.isArray(imported)) throw new Error("Invalid file format");
+            
+            if (confirm(`Import ${imported.length} words? This will merge them with your existing notebook.`)) {
+                // Merge and remove duplicates by ID or Thai word
+                const existingThai = new Set(myNotes.map(n => n.thai));
+                const newWords = imported.filter(n => !existingThai.has(n.thai));
+                
+                myNotes = [...newWords, ...myNotes];
+                localStorage.setItem('thai_notes', JSON.stringify(myNotes));
+                renderNotes();
+                alert(`Successfully imported ${newWords.length} new words!`);
+            }
+        } catch (err) {
+            alert("Error importing file: " + err.message);
+        }
+    };
+    reader.readAsText(file);
+    // Reset input so same file can be imported again if needed
+    input.value = '';
+}
 
 // --- 7. CHAT & LLM LOGIC ---
 

@@ -494,5 +494,17 @@ const vocabularyDataList = [
     { "thai": "ปัญญาประดิษฐ์", "traditional": "人工智能 (AI)", "pronunciation": "bpan-yaa-bpra-dit", "category": "Advanced" },
     { "thai": "ความยั่งยืน", "traditional": "可持續性", "pronunciation": "kwaam-yang-yeun", "category": "Advanced" },
     { "thai": "ยุติธรรม", "traditional": "公平/正義", "pronunciation": "yoot-ti-tam", "category": "Advanced" },
-    { "thai": "เสรีภาพ", "traditional": "自由", "pronunciation": "say-ree-paap", "category": "Advanced" }
+    { "thai": "เสรีภาพ", "traditional": "自由", "pronunciation": "say-ree-paap", "category": "Advanced" },
+    { "thai": "ชาร์ลอตต์", "traditional": "夏洛特", "pronunciation": "chaa-lot", "category": "Names" },
+    { "thai": "เอมิลี", "traditional": "艾米莉", "pronunciation": "ay-mi-lee", "category": "Names" },
+    { "thai": "ส้ม", "traditional": "Som (橘子)", "pronunciation": "som", "category": "Names" },
+    { "thai": "พลอย", "traditional": "Ploy (寶石)", "pronunciation": "ploy", "category": "Names" },
+    { "thai": "แนน", "traditional": "Nan", "pronunciation": "naen", "category": "Names" },
+    { "thai": "เมย์", "traditional": "May", "pronunciation": "may", "category": "Names" },
+    { "thai": "นก", "traditional": "Nok (鳥)", "pronunciation": "nok", "category": "Names" },
+    { "thai": "แบงค์", "strong": "Bank", "traditional": "Bank", "pronunciation": "baeng", "category": "Names" },
+    { "thai": "กอล์ฟ", "traditional": "Golf", "pronunciation": "gof", "category": "Names" },
+    { "thai": "วิน", "traditional": "Win", "pronunciation": "win", "category": "Names" },
+    { "thai": "ฟ้า", "traditional": "Fah (天空/藍色)", "pronunciation": "faa", "category": "Names" },
+    { "thai": "ต้น", "traditional": "Ton (樹/首)", "pronunciation": "dton", "category": "Names" }
 ];

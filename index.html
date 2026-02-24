@@ -58,6 +58,10 @@
             <button onclick="showSection('consonants')" class="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">Consonants</button>
             <button onclick="showSection('vowels')" class="px-6 py-2 bg-emerald-600 text-white rounded-full hover:bg-emerald-700 transition">Vowels</button>
             <button onclick="showSection('vocabulary')" class="px-6 py-2 bg-amber-500 text-white rounded-full hover:bg-amber-600 transition">Vocabulary</button>
+            <button onclick="showSection('tones')" class="px-6 py-2 bg-rose-500 text-white rounded-full hover:bg-rose-600 transition">Tones</button>
+            <button onclick="showSection('notebook')" class="px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition flex items-center">
+                <span class="mr-2">📓</span> Notebook
+            </button>
         </nav>
 
         <!-- Quick Tools Section -->
@@ -119,6 +123,352 @@
 
             <div id="vocab-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 <!-- Vocabulary cards will be injected here -->
+            </div>
+        </section>
+
+        <section id="tones" class="section hidden">
+            <h2 class="text-2xl font-semibold mb-6 border-b pb-2 text-rose-800">Thai Tone Rules Mastery</h2>
+            
+            <!-- Step-by-Step Algorithm -->
+            <div class="mb-12 bg-white p-8 rounded-3xl shadow-sm border-2 border-rose-50">
+                <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center">
+                    <span class="mr-2">🔍</span> Step-by-Step: How to Define the Final Tone
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 relative">
+                    <div class="p-4 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200 relative">
+                        <div class="text-rose-600 font-bold text-xs uppercase mb-2">Step 1</div>
+                        <div class="font-bold text-slate-700 text-sm">Check Tone Mark</div>
+                        <p class="text-[11px] text-slate-500 mt-2">If there is a mark (่ ้ ๊ ๋), follow the <strong>Mark Rules</strong> immediately.</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+                        <div class="text-rose-600 font-bold text-xs uppercase mb-2">Step 2</div>
+                        <div class="font-bold text-slate-700 text-sm">Identify Class</div>
+                        <p class="text-[11px] text-slate-500 mt-2">Look at the initial consonant. Is it <strong>Mid, High, or Low</strong>?</p>
+                    </div>
+                    <div class="p-4 bg-slate-50 rounded-2xl border-2 border-dashed border-slate-200">
+                        <div class="text-rose-600 font-bold text-xs uppercase mb-2">Step 3</div>
+                        <div class="font-bold text-slate-700 text-sm">Check Ending</div>
+                        <p class="text-[11px] text-slate-500 mt-2">Is it a <strong>Live</strong> (long/sonorant) or <strong>Dead</strong> (short/stop) ending?</p>
+                    </div>
+                    <div class="p-4 bg-rose-600 rounded-2xl text-white shadow-lg shadow-rose-100">
+                        <div class="text-rose-200 font-bold text-xs uppercase mb-2">Result</div>
+                        <div class="font-bold text-sm">Final Tone</div>
+                        <p class="text-[11px] mt-2">Combine the 3 factors using the reference below to get the correct pitch.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- 44 Consonants Grouped by Class -->
+                <div class="space-y-6">
+                    <h3 class="font-bold text-slate-800 flex items-center">
+                        <span class="mr-2">🔤</span> 44 Consonants & Their Natural Tones
+                    </h3>
+                    
+                    <!-- Mid Class -->
+                    <div class="bg-blue-50 p-5 rounded-2xl border border-blue-100">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="font-bold text-blue-700 text-sm">Mid Class (9)</span>
+                            <span class="text-[10px] bg-blue-600 text-white px-2 py-0.5 rounded-full">Natural: MID TONE</span>
+                        </div>
+                        <div class="grid grid-cols-5 gap-2">
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">ก</span><div class="text-[9px] text-slate-400">gai</div></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">จ</span><div class="text-[9px] text-slate-400">jik</div></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">ด</span><div class="text-[9px] text-slate-400">dek</div></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">ต</span><div class="text-[9px] text-slate-400">dtao</div></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">บ</span><div class="text-[9px] text-slate-400">bai</div></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">ป</span><div class="text-[9px] text-slate-400">bplaa</div></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">อ</span><div class="text-[9px] text-slate-400">ang</div></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">ฎ</span><div class="text-[9px] text-slate-400">chadaa</div></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">ฏ</span><div class="text-[9px] text-slate-400">bpatak</div></div>
+                        </div>
+                    </div>
+
+                    <!-- High Class -->
+                    <div class="bg-emerald-50 p-5 rounded-2xl border border-emerald-100">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="font-bold text-emerald-700 text-sm">High Class (11)</span>
+                            <span class="text-[10px] bg-emerald-600 text-white px-2 py-0.5 rounded-full">Natural: RISING TONE</span>
+                        </div>
+                        <div class="grid grid-cols-6 gap-2">
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">ข</span></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">ฃ</span></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">ฉ</span></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">ถ</span></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">ฐ</span></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">ผ</span></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">ฝ</span></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">ส</span></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">ศ</span></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">ษ</span></div>
+                            <div class="bg-white p-2 rounded-lg text-center shadow-sm"><span class="thai-font text-xl">ห</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Low Class -->
+                    <div class="bg-amber-50 p-5 rounded-2xl border border-amber-100">
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="font-bold text-amber-700 text-sm">Low Class (24)</span>
+                            <span class="text-[10px] bg-amber-600 text-white px-2 py-0.5 rounded-full">Natural: MID TONE</span>
+                        </div>
+                        <div class="grid grid-cols-8 gap-1">
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ค</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ฅ</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ฆ</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ง</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ช</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ซ</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ฌ</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ญ</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ฑ</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ฒ</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ณ</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ท</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ธ</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">น</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">พ</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ฟ</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ภ</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ม</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ย</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ร</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ล</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ว</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ฬ</div>
+                            <div class="bg-white p-1.5 rounded text-center shadow-xs thai-font text-sm">ฮ</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vowels & Syllable Differentiation -->
+                <div class="space-y-8">
+                    <!-- Vowel Length -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                        <h3 class="font-bold text-slate-800 mb-4 flex items-center">
+                            <span class="mr-2">👄</span> Vowel Length & Tone Impact
+                        </h3>
+                        <div class="flex gap-4">
+                            <div class="flex-1 p-4 bg-emerald-50 rounded-xl border border-emerald-100">
+                                <div class="font-bold text-emerald-700 text-sm mb-1">Long Vowels</div>
+                                <p class="text-[10px] text-slate-600">Acts like a <strong>Live</strong> ending. Tone is stable.</p>
+                                <div class="thai-font text-xl mt-2">อา อี อู เอ โอ</div>
+                            </div>
+                            <div class="flex-1 p-4 bg-rose-50 rounded-xl border border-rose-100">
+                                <div class="font-bold text-rose-700 text-sm mb-1">Short Vowels</div>
+                                <p class="text-[10px] text-slate-600">Acts like a <strong>Dead</strong> ending. Tone "cuts off."</p>
+                                <div class="thai-font text-xl mt-2">อะ อิ อุ เอะ โอะ</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Live vs Dead Syllables -->
+                    <div class="bg-slate-900 p-6 rounded-2xl text-white shadow-xl">
+                        <h3 class="font-bold mb-4 flex items-center">
+                            <span class="mr-2">⚖️</span> Live vs Dead Differentiation
+                        </h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start gap-3">
+                                <div class="bg-emerald-500 p-1 rounded-full mt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-emerald-400 text-sm">LIVE (Continuous)</div>
+                                    <p class="text-[10px] text-slate-400">Ends with <strong>Long Vowel</strong> OR <strong>m, n, ng, y, w</strong>.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="bg-rose-500 p-1 rounded-full mt-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" /></svg>
+                                </div>
+                                <div>
+                                    <div class="font-bold text-rose-400 text-sm">DEAD (Abrupt)</div>
+                                    <p class="text-[10px] text-slate-400">Ends with <strong>Short Vowel</strong> OR <strong>k, t, p</strong>.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 p-3 bg-slate-800 rounded-xl border border-slate-700">
+                            <p class="text-[10px] italic text-slate-400">"If you can hum the ending, it's Live. If it stops your breath, it's Dead."</p>
+                        </div>
+                    </div>
+
+                    <!-- The Master Matrix (Simplified) -->
+                    <div class="bg-white rounded-2xl shadow-sm border overflow-hidden">
+                        <div class="bg-rose-600 p-3 text-white font-bold text-sm text-center">THE FINAL TONE MATRIX (No Marks)</div>
+                        <table class="w-full text-xs text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50">
+                                    <th class="p-3 border-b">Class</th>
+                                    <th class="p-3 border-b text-emerald-600">Live</th>
+                                    <th class="p-3 border-b text-rose-600">Dead (Short V)</th>
+                                    <th class="p-3 border-b text-rose-600">Dead (Long V)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td class="p-3 border-b font-bold">Mid</td><td class="p-3 border-b">Mid —</td><td class="p-3 border-b">Low \</td><td class="p-3 border-b">Low \</td></tr>
+                                <tr class="bg-slate-50"><td class="p-3 border-b font-bold">High</td><td class="p-3 border-b">Rising /</td><td class="p-3 border-b">Low \</td><td class="p-3 border-b">Low \</td></tr>
+                                <tr><td class="p-3 border-b font-bold">Low</td><td class="p-3 border-b">Mid —</td><td class="p-3 border-b">High /</td><td class="p-3 border-b">Falling ^</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Rule #2: Tone Marks (The "Shift") -->
+                    <div class="bg-amber-50 p-6 rounded-2xl border border-amber-200">
+                        <h3 class="font-bold text-amber-800 mb-4 flex items-center">
+                            <span class="mr-2">✍️</span> Rule #2: Tone Marks (The "Shift")
+                        </h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <div class="text-xs font-bold text-slate-500 uppercase mb-2">Mid & High Class (Follows Mark)</div>
+                                <div class="flex justify-between items-center p-3 bg-white rounded-xl border shadow-sm">
+                                    <div class="flex flex-col">
+                                        <span class="thai-font text-2xl">อ่</span>
+                                        <span class="text-[9px] text-slate-400 uppercase">Mai Ek</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-blue-600 font-bold">Low Tone \</div>
+                                        <div class="text-[9px] text-slate-400">Pitch drops</div>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-white rounded-xl border shadow-sm">
+                                    <div class="flex flex-col">
+                                        <span class="thai-font text-2xl">อ้</span>
+                                        <span class="text-[9px] text-slate-400 uppercase">Mai Tho</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-blue-600 font-bold">Falling Tone ^</div>
+                                        <div class="text-[9px] text-slate-400">Up then down</div>
+                                    </div>
+                                </div>
+                                <!-- Added Mai Tri and Mai Jattawa for Mid Class -->
+                                <div class="pt-2 border-t border-dashed mt-2">
+                                    <div class="text-[10px] font-bold text-blue-400 uppercase mb-2">Mid Class Only (Rare)</div>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div class="flex justify-between items-center p-2 bg-blue-50/50 rounded-lg border border-blue-100">
+                                            <span class="thai-font text-xl">อ๊</span>
+                                            <div class="text-right">
+                                                <div class="text-[10px] font-bold text-blue-600">High /</div>
+                                                <div class="text-[8px] text-slate-400">Mai Tri</div>
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-between items-center p-2 bg-blue-50/50 rounded-lg border border-blue-100">
+                                            <span class="thai-font text-xl">อ๋</span>
+                                            <div class="text-right">
+                                                <div class="text-[10px] font-bold text-blue-600">Rising /</div>
+                                                <div class="text-[8px] text-slate-400">Mai Jattawa</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="text-xs font-bold text-amber-700 uppercase mb-2">Low Class (The Shift!)</div>
+                                <div class="flex justify-between items-center p-3 bg-white rounded-xl border border-amber-300 shadow-sm">
+                                    <div class="flex flex-col">
+                                        <span class="thai-font text-2xl text-amber-600">อ่</span>
+                                        <span class="text-[9px] text-slate-400 uppercase">Mai Ek</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-amber-600 font-bold italic">Falling Tone ^</div>
+                                        <div class="text-[9px] text-amber-400">Shifted +1</div>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-white rounded-xl border border-amber-300 shadow-sm">
+                                    <div class="flex flex-col">
+                                        <span class="thai-font text-2xl text-amber-600">อ้</span>
+                                        <span class="text-[9px] text-slate-400 uppercase">Mai Tho</span>
+                                    </div>
+                                    <div class="text-right">
+                                        <div class="text-amber-600 font-bold italic">High Tone /</div>
+                                        <div class="text-[9px] text-amber-400">Shifted +1</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6 p-3 bg-amber-100 rounded-xl border border-amber-200 text-center">
+                            <p class="text-[11px] font-bold text-amber-900 uppercase tracking-wider">💡 The Golden Rule for Low Class Marks</p>
+                            <p class="text-[10px] text-amber-800 mt-1">Low Class consonants always sound <strong>one step higher</strong> than the mark suggests!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="notebook" class="section hidden">
+            <h2 class="text-2xl font-semibold mb-6 border-b pb-2 text-indigo-800">My News Notebook</h2>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left: Add New Word Form -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border sticky top-8">
+                        <h3 class="font-bold text-slate-800 mb-4 flex items-center">
+                            <span class="mr-2">➕</span> Add Word from News
+                        </h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Thai Word</label>
+                                <input type="text" id="note-thai" placeholder="e.g. รัฐบาล" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none thai-font text-xl">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">Translation (Trad. Chinese)</label>
+                                <input type="text" id="note-trad" placeholder="e.g. 政府" class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-500 mb-1 uppercase">News Context / Sentence</label>
+                                <textarea id="note-context" rows="3" placeholder="Paste the sentence where you found it..." class="w-full p-3 border rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-sm"></textarea>
+                            </div>
+                            <button onclick="saveNote()" class="w-full bg-indigo-600 text-white py-3 rounded-xl font-bold hover:bg-indigo-700 transition shadow-lg shadow-indigo-100">
+                                Save to Notebook
+                            </button>
+                        </div>
+
+                        <!-- Keyboard Reference -->
+                        <div class="mt-8 pt-6 border-t">
+                            <h4 class="text-xs font-bold text-slate-400 mb-3 uppercase flex items-center">
+                                <span class="mr-2">⌨️</span> Thai Keyboard Reference
+                            </h4>
+                            <div class="bg-slate-50 p-3 rounded-xl overflow-hidden">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Thai_Kedmanee_keyboard_layout.svg/1200px-Thai_Kedmanee_keyboard_layout.svg.png" alt="Thai Keyboard Layout" class="w-full rounded border cursor-zoom-in" onclick="window.open(this.src)">
+                                <p class="text-[10px] text-slate-400 mt-2 text-center italic">Click to enlarge keyboard layout</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Search & Saved Words -->
+                <div class="lg:col-span-2">
+                    <div class="mb-6 flex gap-4">
+                        <div class="relative flex-1">
+                            <input type="text" id="note-search" oninput="filterNotes()" placeholder="Search your saved words or translations..." class="w-full p-4 pl-12 border-2 border-indigo-100 rounded-2xl focus:ring-2 focus:ring-indigo-500 outline-none shadow-sm text-lg">
+                            <div class="absolute left-4 top-4.5 text-indigo-300">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="exportNotes()" class="bg-white border-2 border-indigo-100 text-indigo-600 px-4 py-2 rounded-2xl hover:bg-indigo-50 transition flex items-center shadow-sm" title="Export to File">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                </svg> Export
+                            </button>
+                            <button onclick="document.getElementById('import-file').click()" class="bg-white border-2 border-indigo-100 text-indigo-600 px-4 py-2 rounded-2xl hover:bg-indigo-50 transition flex items-center shadow-sm" title="Import from File">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                </svg> Import
+                            </button>
+                            <input type="file" id="import-file" class="hidden" onchange="importNotes(this)" accept=".json">
+                        </div>
+                    </div>
+
+                    <div id="notes-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Saved words will appear here -->
+                    </div>
+                    
+                    <div id="no-notes" class="text-center py-20 bg-white rounded-3xl border-2 border-dashed border-slate-200 hidden">
+                        <div class="text-4xl mb-2">📒</div>
+                        <p class="text-slate-400">No words saved yet. Start by adding one from the left!</p>
+                    </div>
+                </div>
             </div>
         </section>
     </div>
