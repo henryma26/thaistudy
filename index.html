@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thai Study - Consonants & Vowels</title>
+    <title>CU-TFL Thai Study - 聽說讀寫備考中心</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&family=Sarabun:wght@400;700&display=swap');
@@ -47,45 +47,105 @@
         .markdown-content { white-space: pre-wrap; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 pb-20">
-    <div id="app" class="max-w-6xl mx-auto px-4 py-8">
-        <header class="text-center mb-12">
-            <h1 class="text-4xl font-bold text-slate-800 mb-4">Thai Language Learning</h1>
-            <p class="text-lg text-slate-600">Consonants and Vowels Reference for Beginners</p>
-        </header>
-
-        <nav class="flex justify-center space-x-4 mb-8">
-            <button onclick="showSection('consonants')" class="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition">Consonants</button>
-            <button onclick="showSection('vowels')" class="px-6 py-2 bg-emerald-600 text-white rounded-full hover:bg-emerald-700 transition">Vowels</button>
-            <button onclick="showSection('vocabulary')" class="px-6 py-2 bg-amber-500 text-white rounded-full hover:bg-amber-600 transition">Vocabulary</button>
-            <button onclick="showSection('tones')" class="px-6 py-2 bg-rose-500 text-white rounded-full hover:bg-rose-600 transition">Tones</button>
-            <button onclick="showSection('notebook')" class="px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition flex items-center">
-                <span class="mr-2">📓</span> Notebook
-            </button>
-        </nav>
-
-        <!-- Quick Tools Section -->
-        <div class="bg-white p-6 rounded-2xl shadow-sm border mb-12 max-w-2xl mx-auto">
-            <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center">
-                <span class="mr-2">🔍</span> Quick Pronunciation & Translate
-            </h3>
-            <div class="flex flex-col sm:flex-row gap-3">
-                <input type="text" id="quick-input" placeholder="Enter Thai word (e.g. สวัสดี)" class="flex-1 p-3 border rounded-xl focus:ring-2 focus:ring-blue-500 outline-none thai-font text-xl">
-                <div class="flex gap-2">
-                    <button onclick="playQuickAudio()" class="flex-1 sm:flex-none bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 transition flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
-                        </svg> Listen
-                    </button>
-                    <button onclick="openGoogleTranslate()" class="flex-1 sm:flex-none bg-slate-100 text-slate-700 px-6 py-3 rounded-xl hover:bg-slate-200 transition border flex items-center justify-center">
-                        🌐 Translate
-                    </button>
+<body class="bg-slate-100 text-slate-900 pb-20">
+    <header class="bg-slate-950 text-white">
+        <div class="max-w-6xl mx-auto px-4 py-8 flex flex-col md:flex-row md:items-end md:justify-between gap-5">
+            <div>
+                <div class="text-xs font-bold tracking-[0.25em] uppercase text-cyan-300 mb-2">CU-TFL 2027 Mission</div>
+                <h1 class="text-3xl sm:text-4xl font-black">泰語四技能備考中心</h1>
+                <p class="text-slate-300 mt-2">ฟัง · พูด · อ่าน · เขียน｜以考試能力為核心，每日累積實戰訓練</p>
+            </div>
+            <div class="bg-white/10 border border-white/10 rounded-2xl px-5 py-3">
+                <div class="text-[10px] uppercase tracking-wider text-slate-400">距離目標日期</div>
+                <div class="flex items-center gap-3 mt-1">
+                    <strong id="cutfl-days-left" class="text-2xl text-cyan-300">-- 日</strong>
+                    <input id="cutfl-target-date" type="date" onchange="saveCutflTargetDate()" class="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs text-white">
                 </div>
             </div>
-            <p class="text-xs text-slate-400 mt-2 italic">* Use "Listen" for browser TTS, or "Translate" to open Google Translate.</p>
         </div>
+    </header>
 
-        <section id="consonants" class="section">
+    <nav class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b shadow-sm">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex gap-2 overflow-x-auto">
+            <button data-section="dashboard" onclick="showSection('dashboard')" class="cutfl-nav whitespace-nowrap px-4 py-2 bg-slate-900 text-white rounded-xl text-sm font-bold">總覽</button>
+            <button data-section="listening" onclick="showSection('listening')" class="cutfl-nav whitespace-nowrap px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-xl text-sm font-bold">🎧 聽力</button>
+            <button data-section="speaking" onclick="showSection('speaking')" class="cutfl-nav whitespace-nowrap px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-xl text-sm font-bold">🎙️ 口說</button>
+            <button data-section="reading" onclick="showSection('reading')" class="cutfl-nav whitespace-nowrap px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-xl text-sm font-bold">📖 閱讀</button>
+            <button data-section="writing" onclick="showSection('writing')" class="cutfl-nav whitespace-nowrap px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-xl text-sm font-bold">✍️ 寫作</button>
+            <button data-section="quiz" onclick="showSection('quiz')" class="cutfl-nav whitespace-nowrap px-4 py-2 text-violet-700 bg-violet-50 hover:bg-violet-100 rounded-xl text-sm font-bold">🎯 Multiple Choice</button>
+            <button data-section="vocabulary" onclick="showSection('vocabulary')" class="cutfl-nav whitespace-nowrap px-4 py-2 text-slate-600 hover:bg-slate-100 rounded-xl text-sm font-bold">字庫</button>
+        </div>
+    </nav>
+
+    <div id="app" class="max-w-6xl mx-auto px-4 py-8">
+
+        <section id="dashboard" class="section">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="lg:col-span-2 bg-gradient-to-br from-cyan-700 to-blue-900 text-white rounded-3xl p-7 shadow-lg">
+                    <div class="text-xs font-bold tracking-widest text-cyan-200 uppercase">Today's mission</div>
+                    <h2 class="text-2xl sm:text-3xl font-black mt-2">今日 30 分鐘：輸入、輸出、再檢討</h2>
+                    <p class="text-cyan-50/80 mt-3">聽力 10 分鐘 · 閱讀 10 分鐘 · 口說或寫作 10 分鐘</p>
+                    <div class="flex flex-wrap gap-3 mt-6">
+                        <button onclick="showSection('listening')" class="px-5 py-3 bg-white text-blue-900 rounded-xl font-bold">開始聽力題</button>
+                        <button onclick="showSection('quiz'); startQuiz('vocab')" class="px-5 py-3 bg-white/10 border border-white/20 rounded-xl font-bold">做詞彙 MC</button>
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl border p-6">
+                    <div class="text-xs font-bold text-slate-400 uppercase tracking-wider">官方考試結構</div>
+                    <div class="mt-4 space-y-3 text-sm">
+                        <div class="flex justify-between"><span>🎧 聽力</span><strong>60 分鐘 · 選擇題</strong></div>
+                        <div class="flex justify-between"><span>📖 閱讀</span><strong>60 分鐘</strong></div>
+                        <div class="flex justify-between"><span>✍️ 寫作</span><strong>60 分鐘</strong></div>
+                        <div class="flex justify-between"><span>🎙️ 口說</span><strong>約 40–45 分鐘</strong></div>
+                    </div>
+                    <p class="text-[10px] text-slate-400 mt-4">本站題目為自製練習，並非朱拉隆功大學官方試題。</p>
+                </div>
+            </div>
+
+            <h2 class="font-black text-xl text-slate-800 mb-4">四技能進度</h2>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <button onclick="showSection('listening')" class="text-left bg-white rounded-2xl border p-5 hover:-translate-y-1 hover:shadow-md transition">
+                    <div class="text-2xl">🎧</div><div class="font-bold mt-3">聽力</div><div id="dashboard-listening" class="text-xs text-slate-500 mt-1">尚未練習</div>
+                </button>
+                <button onclick="showSection('speaking')" class="text-left bg-white rounded-2xl border p-5 hover:-translate-y-1 hover:shadow-md transition">
+                    <div class="text-2xl">🎙️</div><div class="font-bold mt-3">口說</div><div id="dashboard-speaking" class="text-xs text-slate-500 mt-1">尚未練習</div>
+                </button>
+                <button onclick="showSection('reading')" class="text-left bg-white rounded-2xl border p-5 hover:-translate-y-1 hover:shadow-md transition">
+                    <div class="text-2xl">📖</div><div class="font-bold mt-3">閱讀</div><div id="dashboard-reading" class="text-xs text-slate-500 mt-1">尚未練習</div>
+                </button>
+                <button onclick="showSection('writing')" class="text-left bg-white rounded-2xl border p-5 hover:-translate-y-1 hover:shadow-md transition">
+                    <div class="text-2xl">✍️</div><div class="font-bold mt-3">寫作</div><div id="dashboard-writing" class="text-xs text-slate-500 mt-1">尚未練習</div>
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-3xl border p-6">
+                    <h3 class="font-black text-slate-800">每週訓練節奏</h3>
+                    <div class="mt-4 grid grid-cols-7 gap-1 text-center text-[10px]">
+                        <div class="bg-cyan-50 rounded-lg py-3"><b>一</b><br>聽</div><div class="bg-emerald-50 rounded-lg py-3"><b>二</b><br>說</div>
+                        <div class="bg-amber-50 rounded-lg py-3"><b>三</b><br>讀</div><div class="bg-rose-50 rounded-lg py-3"><b>四</b><br>寫</div>
+                        <div class="bg-violet-50 rounded-lg py-3"><b>五</b><br>MC</div><div class="bg-blue-50 rounded-lg py-3"><b>六</b><br>模擬</div>
+                        <div class="bg-slate-100 rounded-lg py-3"><b>日</b><br>複習</div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-3xl border p-6">
+                    <h3 class="font-black text-slate-800">快速工具與基礎參考</h3>
+                    <div class="flex gap-2 mt-4">
+                        <input type="text" id="quick-input" placeholder="輸入泰文試聽讀音" class="min-w-0 flex-1 p-3 border rounded-xl thai-font">
+                        <button onclick="playQuickAudio()" class="px-4 bg-blue-600 text-white rounded-xl">🔊</button>
+                    </div>
+                    <div class="flex flex-wrap gap-2 mt-4 text-xs">
+                        <button onclick="showSection('consonants')" class="px-3 py-2 bg-slate-100 rounded-lg">輔音表</button>
+                        <button onclick="showSection('vowels')" class="px-3 py-2 bg-slate-100 rounded-lg">元音表</button>
+                        <button onclick="showSection('tones')" class="px-3 py-2 bg-slate-100 rounded-lg">聲調規則</button>
+                        <button onclick="showSection('notebook')" class="px-3 py-2 bg-slate-100 rounded-lg">生字筆記</button>
+                        <a href="comparison.html" class="px-3 py-2 bg-slate-100 rounded-lg">AI 比較</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="consonants" class="section hidden">
             <h2 class="text-2xl font-semibold mb-6 border-b pb-2 text-blue-800">Thai Consonants (44)</h2>
             <div id="consonants-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 <!-- Consonants will be injected here -->
@@ -154,6 +214,69 @@
                         <div class="text-rose-200 font-bold text-xs uppercase mb-2">Result</div>
                         <div class="font-bold text-sm">Final Tone</div>
                         <p class="text-[11px] mt-2">Combine the 3 factors using the reference below to get the correct pitch.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Tone Calculator Sandbox -->
+            <div class="mb-12 bg-white p-8 rounded-3xl shadow-sm border-2 border-rose-100">
+                <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center">
+                    <span class="mr-2">🧮</span> Interactive Thai Tone Calculator
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <!-- Dropdown Column 1: Initial Consonant -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-2 uppercase">1. Initial Consonant (初輔音)</label>
+                        <select id="calc-consonant" onchange="runToneCalculator()" class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-rose-500 thai-font text-lg bg-slate-50">
+                            <!-- JS will load all 44 consonants here with their class in label -->
+                        </select>
+                    </div>
+                    <!-- Dropdown Column 2: Tone Mark -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-2 uppercase">2. Tone Mark (聲調符號)</label>
+                        <select id="calc-mark" onchange="runToneCalculator()" class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-rose-500 bg-slate-50 text-sm">
+                            <option value="none">None (無)</option>
+                            <option value="ek">Mai Ek ่ (一等聲調)</option>
+                            <option value="tho">Mai Tho ้ (二等聲調)</option>
+                            <option value="tri">Mai Tri ๊ (三等聲調 - 中輔音專用)</option>
+                            <option value="jattawa">Mai Jattawa ๋ (四等聲調 - 中輔音專用)</option>
+                        </select>
+                    </div>
+                    <!-- Dropdown Column 3: Vowel Length -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-2 uppercase">3. Vowel Length (元音長短)</label>
+                        <select id="calc-vowel" onchange="runToneCalculator()" class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-rose-500 bg-slate-50 text-sm">
+                            <option value="long">Long Vowel (長元音)</option>
+                            <option value="short">Short Vowel (短元音)</option>
+                        </select>
+                    </div>
+                    <!-- Dropdown Column 4: Syllable Ending -->
+                    <div>
+                        <label class="block text-xs font-bold text-slate-500 mb-2 uppercase">4. Syllable Ending / Coda (尾音)</label>
+                        <select id="calc-coda" onchange="runToneCalculator()" class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-rose-500 bg-slate-50 text-sm">
+                            <option value="none">Open/None (無尾音 - 舒聲/促聲由元音長短決定)</option>
+                            <option value="live">Live Coda (-m, -n, -ng, -y, -w) 活尾音/清尾音</option>
+                            <option value="dead">Dead Coda (-p, -t, -k) 死尾音/濁塞尾音</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Calculator Output -->
+                <div class="mt-8 p-6 bg-rose-50/50 rounded-2xl border border-rose-100 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex-1 space-y-3">
+                        <div class="text-xs font-bold text-rose-600 uppercase tracking-wider">Calculation Breakdown (分析步驟)</div>
+                        <div id="calc-explanation" class="text-sm text-slate-700 space-y-2">
+                            <!-- Explanation lines go here -->
+                        </div>
+                    </div>
+                    <div class="text-center bg-white px-8 py-6 rounded-2xl border-2 border-rose-200 shadow-sm min-w-[220px]">
+                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">Resulting Tone (發音聲調)</div>
+                        <div id="calc-result" class="text-3xl font-extrabold text-rose-600">
+                            Mid Tone —
+                        </div>
+                        <div id="calc-pitch-description" class="text-xs text-slate-500 mt-1 italic">
+                            Natural, steady pitch
+                        </div>
                     </div>
                 </div>
             </div>
@@ -477,6 +600,387 @@
                 </div>
             </div>
         </section>
+
+        <!-- CU-TFL Listening Section -->
+        <section id="listening" class="section hidden">
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-6">
+                <div>
+                    <div class="text-xs font-bold text-cyan-700 uppercase tracking-widest">CU-TFL Listening</div>
+                    <h2 class="text-3xl font-black text-slate-900 mt-1">聽一次，掌握主旨與細節</h2>
+                    <p class="text-sm text-slate-500 mt-2">正式考試錄音只播放一次；練習時可切換重播模式。</p>
+                </div>
+                <label class="flex items-center gap-2 text-sm bg-white border rounded-xl px-4 py-3">
+                    <input id="listening-exam-mode" type="checkbox" checked onchange="resetListeningExercise()">
+                    考試模式（只播一次）
+                </label>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-white rounded-3xl border shadow-sm p-6 sm:p-8">
+                    <div class="flex justify-between text-xs font-bold text-slate-400 mb-6">
+                        <span id="listening-type">短對話</span>
+                        <span id="listening-progress">1 / 8</span>
+                    </div>
+                    <div class="text-center py-6 bg-cyan-50 rounded-2xl border border-cyan-100">
+                        <button id="listening-play-btn" onclick="playListeningAudio()" class="w-20 h-20 rounded-full bg-cyan-700 text-white text-3xl shadow-lg hover:scale-105 transition">▶</button>
+                        <div id="listening-play-status" class="text-xs text-cyan-800 mt-3">按下播放，然後回答問題</div>
+                    </div>
+                    <h3 id="listening-question" class="text-lg font-bold text-slate-800 mt-7"></h3>
+                    <div id="listening-options" class="grid gap-3 mt-4"></div>
+                    <div id="listening-feedback" class="hidden mt-5 p-4 rounded-2xl text-sm"></div>
+                    <div class="flex justify-end mt-5">
+                        <button id="listening-next-btn" onclick="nextListeningQuestion()" class="hidden px-5 py-3 bg-slate-900 text-white rounded-xl font-bold">下一題 →</button>
+                    </div>
+                </div>
+                <aside class="space-y-4">
+                    <div class="bg-slate-900 text-white rounded-3xl p-6">
+                        <div class="text-xs text-slate-400 uppercase">本輪成績</div>
+                        <div id="listening-session-score" class="text-4xl font-black text-cyan-300 mt-2">0 / 0</div>
+                    </div>
+                    <div class="bg-white rounded-3xl border p-6">
+                        <h3 class="font-bold">應試策略</h3>
+                        <ul class="text-sm text-slate-600 mt-3 space-y-2 list-disc pl-5">
+                            <li>播放前先看題目及四個選項</li>
+                            <li>記人物、時間、原因及結論</li>
+                            <li>不要因一個生字錯過後文</li>
+                            <li>新聞題先抓主旨，再抓數字</li>
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- Speaking Practice Section -->
+        <section id="speaking" class="section hidden">
+            <div class="mb-6">
+                <div class="text-xs font-bold text-emerald-700 uppercase tracking-widest">CU-TFL Speaking · 3 stages</div>
+                <h2 class="text-3xl font-black text-slate-900 mt-1">對話、問答與個人陳述</h2>
+                <p class="text-sm text-slate-500 mt-2">先理解題目，組織觀點，再錄音讓 AI 從內容、流暢度及發音提供回饋。</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-white rounded-3xl border border-teal-100 shadow-sm p-6">
+                        <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                            <div class="flex-1">
+                                <label for="speaking-scenario" class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">口試階段</label>
+                                <select id="speaking-scenario" onchange="newSpeakingPrompt()" class="w-full p-3 border-2 border-teal-100 rounded-xl bg-teal-50/40 outline-none focus:ring-2 focus:ring-teal-500">
+                                    <option value="conversation">第一階段：日常對話</option>
+                                    <option value="qa">第二階段：延伸問答</option>
+                                    <option value="opinion">第三階段：個人陳述</option>
+                                </select>
+                            </div>
+                            <button onclick="newSpeakingPrompt()" class="self-end px-5 py-3 bg-slate-100 text-slate-700 rounded-xl font-bold hover:bg-slate-200 transition">
+                                🔄 換一句
+                            </button>
+                        </div>
+
+                        <div class="mb-5 p-5 bg-amber-50 border border-amber-100 rounded-2xl">
+                            <div class="text-[10px] font-bold text-amber-700 uppercase tracking-widest">Exam prompt</div>
+                            <p id="speaking-question" class="thai-font text-xl font-bold text-slate-800 mt-2"></p>
+                            <p id="speaking-question-hint" class="text-xs text-slate-500 mt-2"></p>
+                        </div>
+
+                        <div class="bg-gradient-to-br from-teal-600 to-emerald-600 text-white rounded-2xl p-6 text-center">
+                            <div class="text-xs font-bold uppercase tracking-widest text-teal-100 mb-3">建議起句（可自行修改或延伸）</div>
+                            <textarea id="speaking-target" rows="2" oninput="updateSpeakingTranslation()" class="w-full bg-white/10 border border-white/20 rounded-xl p-3 text-center thai-font text-3xl font-bold leading-relaxed outline-none focus:ring-2 focus:ring-white/50 resize-none">สวัสดีครับ วันนี้เป็นอย่างไรบ้างครับ</textarea>
+                            <p id="speaking-translation" class="text-sm text-teal-50 mt-3">你好，今天過得怎樣？</p>
+                            <button onclick="playSpeakingTarget()" class="mt-4 px-5 py-2 bg-white text-teal-700 rounded-full font-bold hover:bg-teal-50 transition">🔊 聽標準讀音</button>
+                        </div>
+
+                        <div class="mt-6 text-center">
+                            <div id="speaking-recorder-status" class="text-sm text-slate-500 mb-4">準備好後按下錄音，用泰文完整回答題目。</div>
+                            <div class="flex flex-wrap justify-center gap-3">
+                                <button id="speaking-record-btn" onclick="startSpeakingRecording()" class="px-7 py-3 bg-rose-500 text-white rounded-full font-bold hover:bg-rose-600 transition shadow-lg shadow-rose-100">
+                                    ● 開始錄音
+                                </button>
+                                <button id="speaking-stop-btn" onclick="stopSpeakingRecording()" disabled class="px-7 py-3 bg-slate-700 text-white rounded-full font-bold hover:bg-slate-800 transition disabled:opacity-40 disabled:cursor-not-allowed">
+                                    ■ 停止及分析
+                                </button>
+                            </div>
+                            <audio id="speaking-playback" controls class="hidden w-full mt-5"></audio>
+                            <p class="text-xs text-slate-400 mt-4">錄音只會傳送給 Gemini 作本次分析，不會儲存在瀏覽器。</p>
+                        </div>
+                    </div>
+
+                    <div id="speaking-feedback-card" class="hidden bg-white rounded-3xl border border-teal-100 shadow-sm p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-bold text-slate-800 text-lg">AI 口試回饋</h3>
+                            <span id="speaking-score" class="px-4 py-2 bg-teal-100 text-teal-800 rounded-full font-extrabold">--/100</span>
+                        </div>
+                        <div id="speaking-feedback" class="markdown-content text-sm text-slate-700 leading-relaxed"></div>
+                    </div>
+                </div>
+
+                <aside class="bg-white rounded-3xl border border-slate-200 shadow-sm p-6 h-fit">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-bold text-slate-800">最近練習</h3>
+                        <button onclick="clearSpeakingHistory()" class="text-xs text-slate-400 hover:text-rose-500">清除</button>
+                    </div>
+                    <div id="speaking-history" class="space-y-3"></div>
+                    <div id="speaking-history-empty" class="py-10 text-center text-slate-400 text-sm">
+                        <div class="text-3xl mb-2">🗣️</div>
+                        完成第一次錄音後，紀錄會顯示在這裡。
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- CU-TFL Reading Section -->
+        <section id="reading" class="section hidden">
+            <div class="mb-6">
+                <div class="text-xs font-bold text-amber-700 uppercase tracking-widest">CU-TFL Reading</div>
+                <h2 class="text-3xl font-black text-slate-900 mt-1">由短訊到新聞評論</h2>
+                <p class="text-sm text-slate-500 mt-2">訓練主旨、指代、推論、語氣及細節定位。</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-white rounded-3xl border shadow-sm p-6 sm:p-8">
+                    <div class="flex justify-between text-xs font-bold text-slate-400">
+                        <span id="reading-type">公告</span><span id="reading-progress">1 / 8</span>
+                    </div>
+                    <article id="reading-passage" class="thai-font text-xl leading-loose bg-amber-50/60 border border-amber-100 rounded-2xl p-6 mt-5"></article>
+                    <h3 id="reading-question" class="text-lg font-bold text-slate-800 mt-7"></h3>
+                    <div id="reading-options" class="grid gap-3 mt-4"></div>
+                    <div id="reading-feedback" class="hidden mt-5 p-4 rounded-2xl text-sm"></div>
+                    <div class="flex justify-end mt-5">
+                        <button id="reading-next-btn" onclick="nextReadingQuestion()" class="hidden px-5 py-3 bg-slate-900 text-white rounded-xl font-bold">下一題 →</button>
+                    </div>
+                </div>
+                <aside class="space-y-4">
+                    <div class="bg-slate-900 text-white rounded-3xl p-6">
+                        <div class="text-xs text-slate-400 uppercase">本輪成績</div>
+                        <div id="reading-session-score" class="text-4xl font-black text-amber-300 mt-2">0 / 0</div>
+                    </div>
+                    <div class="bg-white rounded-3xl border p-6">
+                        <h3 class="font-bold">閱讀標記法</h3>
+                        <div class="text-sm text-slate-600 mt-3 space-y-2">
+                            <p><b>ใคร</b>：人物／機構</p><p><b>เมื่อไร</b>：時間</p>
+                            <p><b>เพราะอะไร</b>：原因</p><p><b>ดังนั้น</b>：結論</p>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- CU-TFL Writing Section -->
+        <section id="writing" class="section hidden">
+            <div class="mb-6">
+                <div class="text-xs font-bold text-rose-700 uppercase tracking-widest">CU-TFL Writing · 60 minutes</div>
+                <h2 class="text-3xl font-black text-slate-900 mt-1">有結構地表達觀點</h2>
+                <p class="text-sm text-slate-500 mt-2">練習切題、段落組織、連接詞、文法與詞彙準確度。</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 bg-white rounded-3xl border shadow-sm p-6 sm:p-8">
+                    <div class="flex flex-wrap justify-between items-center gap-3">
+                        <select id="writing-level" onchange="newWritingPrompt()" class="p-3 bg-rose-50 border border-rose-100 rounded-xl text-sm font-bold">
+                            <option value="short">短文練習</option>
+                            <option value="essay">意見文章</option>
+                        </select>
+                        <div class="flex items-center gap-2">
+                            <span id="writing-timer" class="font-mono font-black text-xl text-rose-700">60:00</span>
+                            <button id="writing-timer-btn" onclick="toggleWritingTimer()" class="px-3 py-2 bg-slate-100 rounded-lg text-xs font-bold">開始計時</button>
+                        </div>
+                    </div>
+                    <div class="mt-5 p-5 bg-rose-50 border border-rose-100 rounded-2xl">
+                        <div class="text-[10px] font-bold text-rose-600 uppercase tracking-widest">Writing prompt</div>
+                        <p id="writing-prompt" class="thai-font text-xl font-bold text-slate-800 mt-2"></p>
+                        <p id="writing-hint" class="text-xs text-slate-500 mt-2"></p>
+                    </div>
+                    <textarea id="writing-answer" oninput="updateWritingCount()" rows="14" placeholder="เริ่มเขียนคำตอบภาษาไทยที่นี่..." class="thai-font w-full mt-5 p-5 border-2 border-slate-100 rounded-2xl text-lg leading-loose outline-none focus:border-rose-300"></textarea>
+                    <div class="flex flex-wrap justify-between items-center gap-3 mt-3">
+                        <span id="writing-count" class="text-xs text-slate-400">0 字元 · 0 詞</span>
+                        <div class="flex gap-2">
+                            <button onclick="newWritingPrompt()" class="px-4 py-3 bg-slate-100 rounded-xl text-sm font-bold">換題目</button>
+                            <button id="writing-submit-btn" onclick="evaluateWriting()" class="px-5 py-3 bg-rose-600 text-white rounded-xl text-sm font-bold">交給 AI 評改</button>
+                        </div>
+                    </div>
+                    <div id="writing-feedback-card" class="hidden mt-6 p-6 bg-slate-50 border rounded-2xl">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="font-black">寫作評語</h3><span id="writing-score" class="font-black text-rose-700">--/100</span>
+                        </div>
+                        <div id="writing-feedback" class="markdown-content text-sm leading-relaxed"></div>
+                    </div>
+                </div>
+                <aside class="bg-white rounded-3xl border p-6 h-fit">
+                    <h3 class="font-black">文章骨架</h3>
+                    <ol class="text-sm text-slate-600 mt-4 space-y-3 list-decimal pl-5">
+                        <li>開首直接回應題目</li><li>每段只講一個重點</li>
+                        <li>用 เพราะว่า、อย่างไรก็ตาม、ดังนั้น 串連</li><li>結尾總結立場</li>
+                    </ol>
+                    <div class="mt-6 pt-5 border-t">
+                        <div class="text-xs text-slate-400">已完成評改</div>
+                        <div id="writing-attempts" class="text-2xl font-black text-rose-700 mt-1">0 次</div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- Quiz Section -->
+        <section id="quiz" class="section hidden">
+            <h2 class="text-2xl font-semibold mb-6 border-b pb-2 text-violet-800 flex items-center">
+                <span class="mr-2">🎯</span> Practice Quiz Arena (學習挑戰場)
+            </h2>
+            
+            <!-- Quiz Selection Screen -->
+            <div id="quiz-selection" class="max-w-4xl mx-auto space-y-6">
+                <div class="text-center py-6">
+                    <h3 class="text-2xl font-extrabold text-slate-800">Test Your Knowledge!</h3>
+                    <p class="text-slate-500 mt-2 text-base">Select a challenge mode below to test and reinforce your Thai learning progress.</p>
+                </div>
+
+                <div class="bg-white border rounded-2xl p-4 max-w-4xl mx-auto">
+                    <div class="flex flex-col sm:flex-row gap-4 items-stretch sm:items-end">
+                        <div class="flex-1">
+                            <label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase tracking-wider">泰文語音</label>
+                            <select id="tts-voice-select" onchange="onTtsVoiceChange(this.value)" class="w-full p-2.5 border border-slate-200 rounded-xl text-sm bg-slate-50 outline-none focus:ring-2 focus:ring-violet-400">
+                                <option value="">載入語音中…</option>
+                            </select>
+                        </div>
+                        <div class="sm:w-48">
+                            <label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase tracking-wider">語速 <span id="tts-rate-label">0.60</span></label>
+                            <input id="tts-rate" type="range" min="0.4" max="0.9" step="0.05" value="0.6" oninput="onTtsRateChange(this.value)" class="w-full accent-violet-600">
+                        </div>
+                        <button type="button" onclick="playAudio('สวัสดี')" class="px-4 py-2.5 bg-violet-50 text-violet-700 border border-violet-100 rounded-xl text-sm font-bold hover:bg-violet-100 transition whitespace-nowrap">試聽 สวัสดี</button>
+                    </div>
+                    <p id="tts-voice-hint" class="text-[11px] text-slate-400 mt-2">優先使用女聲。語速預設比以前慢，方便聽清聲調。</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+                    <!-- Quiz Card 1: Consonants -->
+                    <div class="bg-white p-6 rounded-2xl border-2 border-dashed border-blue-100 hover:border-blue-400 transition flex flex-col justify-between items-center text-center shadow-sm hover:shadow-md cursor-pointer group" onclick="startQuiz('consonant')">
+                        <div class="space-y-4">
+                            <div class="w-16 h-14 bg-blue-100 rounded-2xl flex items-center justify-center text-3xl mx-auto group-hover:scale-110 transition-transform">🔤</div>
+                            <h4 class="font-bold text-slate-800 text-lg">Consonant Classes</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed">Test if you can identify whether a consonant is Mid, High, or Low class. (極重要！這是判定聲調的基礎。)</p>
+                        </div>
+                        <button class="mt-6 w-full py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition">Start Challenge</button>
+                    </div>
+
+                    <!-- Quiz Card 2: Vocabulary -->
+                    <div class="bg-white p-6 rounded-2xl border-2 border-dashed border-amber-100 hover:border-amber-400 transition flex flex-col justify-between items-center text-center shadow-sm hover:shadow-md cursor-pointer group" onclick="startQuiz('vocab')">
+                        <div class="space-y-4 w-full">
+                            <div class="w-16 h-14 bg-amber-100 rounded-2xl flex items-center justify-center text-3xl mx-auto group-hover:scale-110 transition-transform">🃏</div>
+                            <h4 class="font-bold text-slate-800 text-lg">Vocabulary Match</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed">從接近 5,000 個生字中隨機抽題，訓練泰文與中文意思配對。</p>
+                            
+                            <!-- Category Dropdown -->
+                            <div class="mt-3 text-left" onclick="event.stopPropagation()">
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase tracking-wider">Quiz Category (詞彙類別)</label>
+                                <select id="quiz-vocab-category" class="w-full p-2 border border-amber-100 rounded-xl text-xs bg-slate-50 text-slate-700 outline-none focus:ring-2 focus:ring-amber-500">
+                                    <option value="All">All Categories (所有類別)</option>
+                                    <!-- Dynamic categories loaded in app.js -->
+                                </select>
+                            </div>
+                        </div>
+                        <button class="mt-6 w-full py-2.5 bg-amber-500 text-white rounded-xl font-bold hover:bg-amber-600 transition">Start Challenge</button>
+                    </div>
+
+                    <!-- Quiz Card 3: Listening -->
+                    <div class="bg-white p-6 rounded-2xl border-2 border-dashed border-cyan-100 hover:border-cyan-400 transition flex flex-col justify-between items-center text-center shadow-sm hover:shadow-md cursor-pointer group" onclick="startQuiz('listening')">
+                        <div class="space-y-4 w-full">
+                            <div class="w-16 h-14 bg-cyan-100 rounded-2xl flex items-center justify-center text-3xl mx-auto group-hover:scale-110 transition-transform">🎧</div>
+                            <h4 class="font-bold text-slate-800 text-lg">Listening Challenge</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed">只聽泰文語音，不顯示生字；從四個中文意思中揀出正確答案。</p>
+                            <div class="mt-3 text-left" onclick="event.stopPropagation()">
+                                <label class="block text-[10px] font-bold text-slate-400 mb-1 uppercase tracking-wider">Listening Category (詞彙類別)</label>
+                                <select id="quiz-listening-category" class="w-full p-2 border border-cyan-100 rounded-xl text-xs bg-slate-50 text-slate-700 outline-none focus:ring-2 focus:ring-cyan-500">
+                                    <option value="All">All Categories (所有類別)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="mt-6 w-full py-2.5 bg-cyan-600 text-white rounded-xl font-bold hover:bg-cyan-700 transition">Start Listening</button>
+                    </div>
+
+                    <!-- Quiz Card 4: Tone Rules -->
+                    <div class="bg-white p-6 rounded-2xl border-2 border-dashed border-rose-100 hover:border-rose-400 transition flex flex-col justify-between items-center text-center shadow-sm hover:shadow-md cursor-pointer group" onclick="startQuiz('tone')">
+                        <div class="space-y-4">
+                            <div class="w-16 h-14 bg-rose-100 rounded-2xl flex items-center justify-center text-3xl mx-auto group-hover:scale-110 transition-transform">🎶</div>
+                            <h4 class="font-bold text-slate-800 text-lg">Tone Mastery</h4>
+                            <p class="text-xs text-slate-500 leading-relaxed">Given an initial class, vowel length, tone mark, and ending, calculate the correct resulting tone (5 possibilities).</p>
+                        </div>
+                        <button class="mt-6 w-full py-2.5 bg-rose-500 text-white rounded-xl font-bold hover:bg-rose-600 transition">Start Challenge</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Play Screen -->
+            <div id="quiz-container" class="max-w-2xl mx-auto bg-white p-8 rounded-3xl shadow-sm border-2 border-violet-100 hidden">
+                <!-- Header with Score & Progress -->
+                <div class="flex justify-between items-center mb-6">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest" id="quiz-progress">Question 1 of 10</span>
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-bold text-violet-600 uppercase bg-violet-50 px-3 py-1 rounded-full border border-violet-100" id="quiz-score-badge">Score: 0</span>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-8">
+                    <div class="bg-violet-600 h-full transition-all duration-300" id="quiz-progress-bar" style="width: 10%"></div>
+                </div>
+
+                <!-- Question Area -->
+                <div id="quiz-question-container" class="text-center space-y-4 mb-8">
+                    <div class="text-[10px] font-bold text-violet-500 uppercase tracking-wider" id="quiz-type-label">CONSONANT CLASS</div>
+                    <div class="text-6xl font-extrabold text-slate-800 thai-font" id="quiz-target-character">ก</div>
+                    <button id="quiz-replay-audio" type="button" onclick="replayQuizAudio()" class="inline-flex items-center gap-1 mx-auto px-3 py-1.5 text-xs font-bold text-violet-600 bg-violet-50 border border-violet-100 rounded-full hover:bg-violet-100 transition">🔊 再聽一次</button>
+                    <p class="text-slate-600 text-lg font-medium" id="quiz-question-text">What class of consonant is this character?</p>
+                </div>
+
+                <!-- Answer Choices Grid -->
+                <div class="grid grid-cols-1 gap-3 mb-8" id="quiz-options">
+                    <!-- Choice buttons will be injected here -->
+                </div>
+
+                <!-- Feedback Area (Initially Hidden) -->
+                <div id="quiz-feedback" class="p-4 rounded-2xl mb-8 hidden border transition-all duration-300">
+                    <div class="flex gap-3 items-start">
+                        <div class="text-2xl" id="quiz-feedback-emoji">✅</div>
+                        <div>
+                            <div class="font-bold text-slate-800" id="quiz-feedback-title">Correct!</div>
+                            <p class="text-xs text-slate-500 mt-1" id="quiz-feedback-explanation">ก is Ko Kai (chicken). It is classified as Mid Class.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Control Buttons -->
+                <div class="flex justify-end">
+                    <button id="quiz-next-btn" onclick="nextQuestion()" class="px-6 py-3 bg-violet-600 text-white rounded-xl font-bold hover:bg-violet-700 transition flex items-center gap-2" style="display:none">
+                        <span>Next Question</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Results Screen -->
+            <div id="quiz-results" class="max-w-md mx-auto bg-white p-8 rounded-3xl shadow-sm border-2 border-violet-100 text-center space-y-6 hidden">
+                <div class="text-6xl">🏆</div>
+                <div class="space-y-2">
+                    <h3 class="text-2xl font-bold text-slate-800">Challenge Completed!</h3>
+                    <p class="text-slate-500 text-sm">Amazing effort! Here's how you performed:</p>
+                </div>
+
+                <!-- Score Summary Cards -->
+                <div class="bg-slate-50 p-6 rounded-2xl border flex items-center justify-around">
+                    <div>
+                        <div class="text-3xl font-extrabold text-violet-600" id="results-score">8/10</div>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1">Questions Correct</div>
+                    </div>
+                    <div class="border-l h-10 border-slate-200"></div>
+                    <div>
+                        <div class="text-3xl font-extrabold text-amber-500" id="results-percentage">80%</div>
+                        <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1">Accuracy</div>
+                    </div>
+                </div>
+
+                <p class="text-sm font-medium text-slate-600 px-4" id="results-encouragement">Excellent work! You are building a strong foundation in Thai pronunciation and structure.</p>
+
+                <div class="flex gap-3">
+                    <button onclick="restartQuiz()" class="flex-1 py-3 bg-violet-600 text-white rounded-xl font-bold hover:bg-violet-700 transition shadow-lg shadow-violet-100">Try Again</button>
+                    <button onclick="exitQuiz()" class="flex-1 py-3 bg-slate-100 text-slate-700 rounded-xl font-bold hover:bg-slate-200 transition border">Quit Arena</button>
+                </div>
+            </div>
+        </section>
     </div>
 
     <!-- Chat Widget -->
@@ -502,11 +1006,11 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>
                 </div>
-                <h3 class="font-bold text-slate-800">DeepSeek API Key Required</h3>
-                <p class="text-sm text-slate-600">To use the AI tutor, please enter your DeepSeek API key. Your key is stored locally in your browser.</p>
-                <input type="password" id="api-key-input" placeholder="sk-..." class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                <h3 class="font-bold text-slate-800">Gemini API Key Required</h3>
+                <p class="text-sm text-slate-600">To use the AI tutor, please enter your Google Gemini API key. Your key is stored locally in your browser.</p>
+                <input type="password" id="api-key-input" placeholder="AIza..." class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
                 <button onclick="saveApiKey()" class="w-full bg-blue-600 text-white py-2 rounded-lg font-bold hover:bg-blue-700 transition">Save Key</button>
-                <p class="text-[10px] text-slate-400 italic">No DeepSeek key? Visit deepseek.com to get one.</p>
+                <p class="text-[10px] text-slate-400 italic">No key? Visit aistudio.google.com/apikey to get a free one.</p>
             </div>
 
             <!-- Chat Messages (Initially Hidden) -->
@@ -536,8 +1040,10 @@
     </div>
 
     <script src="data.js"></script>
-    <script src="vocabulary.js"></script>
-    <script src="app.js"></script>
+    <script src="vocabulary.js?v=20261003"></script>
+    <script src="cutfl-data.js"></script>
+    <script src="app.js?v=20261003-listening"></script>
+    <script src="cutfl.js"></script>
     <script>
         // Emergency Debug: Force load if DOMContentLoaded already fired
         if (document.readyState === "complete" || document.readyState === "interactive") {

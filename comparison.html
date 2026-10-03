@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Comparison - Thai Study Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .thai-font { font-family: 'Noto Sans Thai', sans-serif; }
+        .trad-font { font-family: 'Noto Serif TC', serif; }
+        .chat-messages { height: calc(100vh - 300px); min-height: 400px; }
+        .markdown-content { white-space: pre-wrap; }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <span class="text-2xl">🇹🇭</span>
+                    <span class="font-bold text-xl text-slate-800">ThaiStudy AI Hub</span>
+                </div>
+                <div class="flex gap-4">
+                    <a href="index.html" class="px-4 py-2 text-slate-600 hover:text-blue-600 font-medium transition">Back to Main</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-slate-900 mb-2">Dual AI Comparison</h1>
+            <p class="text-slate-600">Ask a question once, see responses from both DeepSeek and Gemini.</p>
+        </header>
+
+        <!-- API Keys Setup -->
+        <div id="api-setup-container" class="bg-white p-6 rounded-2xl shadow-sm border mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">DeepSeek API Key (sk-...)</label>
+                    <input type="password" id="deepseek-key-input" placeholder="Enter DeepSeek Key" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-slate-700 mb-2">Gemini API Key (AIza...)</label>
+                    <input type="password" id="gemini-key-input" placeholder="Enter Gemini Key" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+            </div>
+            <button onclick="saveApiKeys()" class="mt-6 w-full bg-blue-600 text-white py-2 rounded-lg font-bold hover:bg-blue-700 transition">Save Keys & Start</button>
+        </div>
+
+        <!-- Shared Input -->
+        <div id="chat-input-container" class="hidden bg-white p-4 rounded-2xl shadow-md border mb-8 sticky top-20 z-40">
+            <div class="flex gap-2">
+                <input type="text" id="shared-input" placeholder="Type your Thai question here..." class="flex-1 p-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg" onkeypress="if(event.key === 'Enter') sendToBoth()">
+                <button onclick="sendToBoth()" class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-blue-700 transition flex items-center gap-2">
+                    <span>Ask Both</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Chat Windows Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Left: DeepSeek -->
+            <div class="flex flex-col bg-white rounded-2xl shadow-sm border overflow-hidden">
+                <div class="bg-slate-800 p-4 text-white flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+                        <span class="font-bold">DeepSeek V4.1 Flash</span>
+                    </div>
+                    <span class="text-xs text-slate-400">Model: deepseek-flash</span>
+                </div>
+                <div id="deepseek-messages" class="chat-messages overflow-y-auto p-4 space-y-4 bg-slate-50">
+                    <div class="bg-slate-200 p-3 rounded-lg rounded-tl-none mr-8 text-sm text-slate-700">
+                        DeepSeek is ready. Please enter your API key above.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Gemini -->
+            <div class="flex flex-col bg-white rounded-2xl shadow-sm border overflow-hidden">
+                <div class="bg-blue-600 p-4 text-white flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></span>
+                        <span class="font-bold">Google Gemini</span>
+                    </div>
+                    <span class="text-xs text-blue-200">Model: gemini-3.8-flash</span>
+                </div>
+                <div id="gemini-messages" class="chat-messages overflow-y-auto p-4 space-y-4 bg-slate-50">
+                    <div class="bg-blue-100 p-3 rounded-lg rounded-tl-none mr-8 text-sm text-blue-800">
+                        Gemini is ready. Please enter your API key above.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="comparison.js"></script>
+</body>
+</html>
